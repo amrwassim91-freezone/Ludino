@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ludino — منصة الألعاب المجانية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0d14;--pn:#0f141e;--pn2:#151c29;--ln:#1c2433;--tx:#eef2f8;--mu:#8b97ab;--or:#ff6a1a;--or2:#ff9a3c;--er:#f87171}
+@media (prefers-color-scheme:light){:root{--bg:#f4f1ee;--pn:#fff;--pn2:#f1ece7;--ln:#e3dcd4;--tx:#1b1713;--mu:#6b6258;--or:#d4500a;--or2:#e07a1f;--er:#c0262d}}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--tx);font-family:Cairo,system-ui,sans-serif}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:is(button,input,a):focus-visible{outline:3px solid var(--or2);outline-offset:2px}
+.btn{background:linear-gradient(135deg,var(--or),var(--or2));color:#1a0d00;border:0;border-radius:10px;padding:10px 16px;font-weight:800;text-decoration:none;display:inline-block;text-align:center}
+.btn.o{background:none;border:1px solid var(--ln);color:var(--tx)}
+input{width:100%;padding:11px 12px;border-radius:10px;background:var(--pn2);border:1px solid var(--ln);margin:6px 0}
+.hidden{display:none!important}
+#shell{display:grid;grid-template-columns:200px 1fr;height:100%}
+#nav{background:var(--pn);border-inline-end:1px solid var(--ln);padding:18px 12px;display:flex;flex-direction:column;gap:6px}
+.logo{font-weight:800;font-size:24px;margin-bottom:12px}
+.logo i{font-style:normal;color:var(--or)}
+.tab{background:none;border:0;text-align:start;padding:11px 14px;border-radius:10px;color:var(--mu);font-weight:600}
+.tab.on,.tab:hover{background:var(--pn2);color:var(--tx)}
+.tab.on{border-inline-start:3px solid var(--or)}
+main{overflow-y:auto;padding:20px;padding-top:calc(20px + env(safe-area-inset-top,0px))}
+h2{margin:0 0 4px}.sub{color:var(--mu);margin:0 0 16px;font-size:14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px}
+.chip{background:var(--pn2);border:1px solid var(--ln);border-radius:20px;padding:6px 14px;font-size:14px}
+.chip.on{background:var(--or);color:#1a0d00;border-color:var(--or);font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
+.card{background:var(--pn);border:1px solid var(--ln);border-radius:14px;overflow:hidden;cursor:pointer;text-align:start;padding:0;color:inherit}
+.card:hover{border-color:var(--or)}
+.cv{aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;padding:10px;text-align:center;font-weight:800;font-size:20px;color:#fff;text-shadow:0 2px 8px #0008}
+.ci{padding:10px 12px;font-size:13px;color:var(--mu)}.ci b{display:block;color:var(--tx);font-size:15px}
+.tag{display:inline-block;background:var(--pn2);border-radius:6px;padding:1px 7px;font-size:11px;margin:4px 3px 0 0;color:var(--mu)}
+.tag.os{color:#4ade80}
+dialog{background:var(--pn);color:var(--tx);border:1px solid var(--ln);border-radius:16px;max-width:460px;width:92%;padding:0}
+dialog::backdrop{background:#000a}
+.dh{height:150px;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;color:#fff;text-shadow:0 2px 10px #0008;padding:10px;text-align:center}
+.db{padding:16px}.db p{line-height:1.8;color:var(--mu)}
+.stores{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.note{font-size:12px;color:var(--mu);margin-top:8px}
+.tabs2{display:flex;gap:8px;margin-bottom:14px}
+.stage{background:var(--pn);border:1px solid var(--ln);border-radius:14px;padding:16px;text-align:center}
+canvas{background:#05070b;border-radius:10px;max-width:100%;touch-action:none;border:1px solid var(--ln)}
+.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:340px;margin:12px auto}
+.mc{aspect-ratio:1;border-radius:10px;border:1px solid var(--ln);background:var(--pn2);font-size:30px}
+.mc.up{background:var(--or);}
+.auth{max-width:380px;margin:4vh auto;padding:22px;background:var(--pn);border:1px solid var(--ln);border-radius:16px}
+.err{color:var(--er);font-size:13px;min-height:20px}
+#chat{display:flex;flex-direction:column;height:calc(100vh - 150px);min-height:340px;background:var(--pn);border:1px solid var(--ln);border-radius:14px;overflow:hidden}
+#msgs{flex:1;overflow-y:auto;padding:12px 16px}
+.m{padding:5px 0}.m b{font-size:14px}.m b.me2{color:var(--or2)}.m small{color:var(--mu);margin-inline-start:8px;font-size:11px}
+.m p{margin:2px 0 0;white-space:pre-wrap;word-break:break-word}
+#bar{display:flex;gap:8px;padding:10px;border-top:1px solid var(--ln)}#bar input{margin:0}
+.chbar{display:flex;gap:6px;padding:10px;border-bottom:1px solid var(--ln);overflow-x:auto;align-items:center}
+.chbar .chip{white-space:nowrap}
+.di{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:var(--pn2)}
+.card .ci span{display:inline}
+a.card{text-decoration:none}
+@media(max-width:760px){
+#shell{grid-template-columns:1fr;grid-template-rows:1fr auto}
+#nav{order:2;flex-direction:row;justify-content:space-around;border-inline-end:0;border-top:1px solid var(--ln);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+#nav .logo{display:none}.tab{flex:1;text-align:center;padding:9px 4px;font-size:13px}.tab.on{border-inline-start:0;border-top:3px solid var(--or)}
+main{padding:14px;padding-top:calc(14px + env(safe-area-inset-top,0px))}
+#chat{height:calc(100vh - 230px)}}
+</style>
+</head>
+<body>
+<div id="shell">
+<nav id="nav" aria-label="التنقل">
+<div class="logo">Ludi<i>no</i></div>
+<button class="tab on" data-v="store">🛒 المتجر</button>
+<button class="tab" data-v="deals">🔥 العروض</button>
+<button class="tab" data-v="play">🕹️ العب الآن</button>
+<button class="tab" data-v="chat">💬 المجتمع</button>
+</nav>
+<main>
+<!-- المتجر -->
+<section id="v-store">
+<h2>متجر الألعاب المجانية</h2>
+<p class="sub">كل الأزرار تفتح المتجر الرسمي للعبة حسب جهازك لتنزيلها بشكل قانوني وآمن.</p>
+<input id="q" placeholder="ابحث عن لعبة..." aria-label="بحث">
+<div class="chips" id="chips"></div>
+<div class="grid" id="grid"></div>
+</section>
+
+<!-- العروض -->
+<section id="v-deals" class="hidden">
+<h2>🎁 مجانية هذا الأسبوع</h2>
+<p class="sub">ألعاب مجانية على Epic Games Store وغيره، تتحدث تلقائيًا وتفتح صفحة الاستلام الرسمية.</p>
+<div class="grid" id="free"></div>
+<p class="note">البيانات من <a href="https://www.gamerpower.com" target="_blank" rel="noopener noreferrer" style="color:var(--or2)">GamerPower</a></p>
+<h2 style="margin-top:28px">🔥 عروض Steam</h2>
+<p class="sub">أفضل التخفيضات الحالية حسب تقييم العرض.</p>
+<div class="grid" id="steam"></div>
+<p class="note">البيانات من <a href="https://www.cheapshark.com" target="_blank" rel="noopener noreferrer" style="color:var(--or2)">CheapShark</a></p>
+</section>
+
+<!-- العب الآن -->
+<section id="v-play" class="hidden">
+<h2>العب الآن داخل الموقع</h2>
+<p class="sub">ألعاب حقيقية تعمل مباشرة بدون تنزيل.</p>
+<div class="tabs2"><button class="chip on" data-g="snake">🐍 الثعبان</button><button class="chip" data-g="mem">🧠 الذاكرة</button></div>
+<div class="stage" id="stage"></div>
+</section>
+
+<!-- المجتمع -->
+<section id="v-chat" class="hidden">
+<h2>مجتمع لودينو</h2>
+<p class="sub">دردشة مباشرة مع اللاعبين، قنوات وحسابات حقيقية.</p>
+<div id="setup" class="auth hidden" style="line-height:1.9"><b>إعداد الدردشة مطلوب</b><br>أنشئ مشروع Firebase مجانيًا، فعّل Email/Password وFirestore، ثم الصق إعداداتك مكان <code>cfg</code> في آخر الملف، وقواعد الأمان من ملف firestore.rules.</div>
+<div id="auth" class="auth hidden">
+<input id="nm" placeholder="اسم اللاعب (للتسجيل فقط)" maxlength="20" aria-label="اسم اللاعب">
+<input id="em" type="email" placeholder="البريد الإلكتروني" dir="ltr" aria-label="البريد">
+<input id="pw" type="password" placeholder="كلمة المرور (6 أحرف على الأقل)" dir="ltr" aria-label="كلمة المرور">
+<p class="err" id="er" role="alert"></p>
+<button class="btn" id="si">دخول</button> <button class="btn o" id="su">إنشاء حساب</button></div>
+<div id="chat" class="hidden">
+<div class="chbar" id="chs"></div>
+<div id="msgs" aria-live="polite"></div>
+<div id="bar"><input id="tx" placeholder="اكتب رسالة..." maxlength="1000" aria-label="رسالة"><button class="btn" id="sd">إرسال</button><button class="btn o" id="so">خروج</button></div>
+</div>
+</section>
+</main>
+</div>
+
+<dialog id="dlg"><div class="dh" id="dh"></div><div class="db"><p id="dd"></p><div id="dt"></div><div class="stores" id="ds"></div><p class="note">الملكية الكاملة للعبة تعود لشركتها، ولودينو يوجّهك للمتجر الرسمي فقط.</p><button class="btn o" id="dx" style="width:100%">إغلاق</button></div></dialog>
+
+<script>
+const $=i=>document.getElementById(i);
+const PL={pc:"بيسي",mobile:"هاتف",xbox:"Xbox",ps:"PlayStation"};
+const G=[
+{n:"Fortnite",g:"باتل رويال",p:["pc","mobile","xbox","ps"],c:["#6d28d9","#2563eb"],d:"لعبة باتل رويال شهيرة مع بناء وأحداث موسمية، وتدعم اللعب المشترك بين الأجهزة."},
+{n:"Genshin Impact",g:"عالم مفتوح",p:["pc","mobile","ps"],c:["#0ea5e9","#14b8a6"],d:"مغامرة عالم مفتوح بقتال عناصر وشخصيات متعددة وقصة غنية."},
+{n:"Apex Legends",g:"باتل رويال",p:["pc","xbox","ps","mobile"],c:["#b91c1c","#f97316"],d:"باتل رويال سريعة بأبطال لكل منهم قدرات خاصة وفرق من ثلاثة."},
+{n:"Rocket League",g:"رياضة",p:["pc","xbox","ps"],c:["#1d4ed8","#f59e0b"],d:"كرة قدم بالسيارات، سهلة التعلم ويصعب إتقانها."},
+{n:"Warframe",g:"أكشن تعاوني",p:["pc","xbox","ps","mobile"],c:["#475569","#06b6d4"],d:"أكشن تعاوني فضائي بمهمات وتخصيص عميق للمحاربين."},
+{n:"Counter-Strike 2",g:"تصويب",p:["pc"],c:["#92400e","#ca8a04"],d:"أشهر ألعاب التصويب التكتيكي بين فريقين."},
+{n:"Dota 2",g:"مواجهات",p:["pc"],c:["#7f1d1d","#be123c"],d:"لعبة MOBA استراتيجية بعشرات الأبطال ومباريات تنافسية."},
+{n:"Roblox",g:"مجتمع وإبداع",p:["pc","mobile","xbox"],c:["#dc2626","#7c3aed"],d:"منصة ملايين الألعاب التي يصنعها اللاعبون أنفسهم."},
+{n:"Brawl Stars",g:"أكشن سريع",p:["mobile"],c:["#eab308","#ea580c"],d:"معارك قصيرة بفرق من ثلاثة وأوضاع متنوعة."},
+{n:"Call of Duty: Warzone",g:"باتل رويال",p:["pc","xbox","ps"],c:["#14532d","#374151"],d:"باتل رويال ضخمة بخريطة كبيرة وأسلحة متنوعة."},
+{n:"Fall Guys",g:"حفلة جماعية",p:["pc","xbox","ps"],c:["#ec4899","#8b5cf6"],d:"سباقات ومراحل مرحة بعشرات اللاعبين."},
+{n:"Destiny 2",g:"أكشن وخيال علمي",p:["pc","xbox","ps"],c:["#1e3a8a","#0891b2"],d:"تصويب خيال علمي بغارات تعاونية وعالم مشترك."},
+{n:"SuperTuxKart",g:"سباقات",p:["pc"],c:["#16a34a","#0ea5e9"],d:"سباقات كارت مرحة مفتوحة المصدر ومجانية بالكامل.",o:"https://supertuxkart.net"},
+{n:"0 A.D.",g:"استراتيجية",p:["pc"],c:["#a16207","#78350f"],d:"استراتيجية تاريخية فخمة مفتوحة المصدر.",o:"https://play0ad.com"},
+{n:"OpenRA",g:"استراتيجية",p:["pc"],c:["#991b1b","#1f2937"],d:"إحياء مفتوح المصدر لألعاب الاستراتيجية الكلاسيكية.",o:"https://www.openra.net"}
+];
+const dev=/iPhone|iPad|iPod/i.test(navigator.userAgent)?"ios":/Android/i.test(navigator.userAgent)?"and":"pc";
+let FAV=[];try{FAV=JSON.parse(localStorage.getItem("ludino_fav")||"[]")}catch(e){}
+const saveFav=()=>{try{localStorage.setItem("ludino_fav",JSON.stringify(FAV))}catch(e){}};
+let flt="all";
+const CH=[["all","الكل"],["pc","بيسي"],["mobile","هاتف"],["xbox","Xbox"],["ps","PlayStation"],["fav","⭐ مفضلتي"],["os","مفتوحة المصدر"]];
+$("chips").innerHTML=CH.map(c=>`<button class="chip${c[0]==="all"?" on":""}" data-f="${c[0]}">${c[1]}</button>`).join("");
+const grad=g=>`linear-gradient(135deg,${g.c[0]},${g.c[1]})`;
+function render(){const t=$("q").value.trim().toLowerCase();
+const L=G.filter(g=>(flt==="all"||(flt==="fav"?FAV.includes(g.n):flt==="os"?!!g.o:g.p.includes(flt)))&&g.n.toLowerCase().includes(t));
+$("grid").innerHTML=L.length?L.map(g=>`<button class="card" data-n="${g.n}"><div class="cv" style="background:${grad(g)}">${g.n}</div><div class="ci"><b>${g.n}</b>${g.g}<br>${g.p.map(p=>`<span class="tag">${PL[p]}</span>`).join("")}${g.o?'<span class="tag os">مفتوحة المصدر</span>':""}</div></button>`).join(""):'<p class="sub">لا توجد نتائج.</p>'}
+$("chips").onclick=e=>{const b=e.target.closest("[data-f]");if(!b)return;flt=b.dataset.f;document.querySelectorAll("#chips .chip").forEach(x=>x.classList.toggle("on",x===b));render()};
+$("q").oninput=render;
+function stores(g){const q=encodeURIComponent(g.n),a=[];
+if(g.o)a.push(["🌐 الموقع الرسمي للمطور",g.o,true]);
+if(g.p.includes("pc")&&!g.o){a.push(["Steam","https://store.steampowered.com/search/?term="+q,dev==="pc"]);a.push(["Epic Games","https://store.epicgames.com/browse?q="+q,false])}
+if(g.p.includes("mobile")){a.push(["App Store","https://apps.apple.com/search?term="+q,dev==="ios"]);a.push(["Google Play","https://play.google.com/store/search?c=apps&q="+q,dev==="and"])}
+if(g.p.includes("xbox"))a.push(["Microsoft / Xbox Store","https://www.xbox.com/search?q="+q,false]);
+if(g.p.includes("ps"))a.push(["PlayStation Store","https://store.playstation.com/search/"+q,false]);
+return a}
+$("grid").onclick=e=>{const b=e.target.closest("[data-n]");if(!b)return;const g=G.find(x=>x.n===b.dataset.n);
+$("dh").style.background=grad(g);$("dh").textContent=g.n;$("dd").textContent=g.d;
+$("dt").innerHTML=g.p.map(p=>`<span class="tag">${PL[p]}</span>`).join("");
+const isF=FAV.includes(g.n);
+$("ds").innerHTML=stores(g).map(s=>`<a class="btn${s[2]?"":" o"}" href="${s[1]}" target="_blank" rel="noopener noreferrer">${s[2]?"⬇ ":""}${s[0]}</a>`).join("")+`<button class="btn o" id="fv">${isF?"إزالة من المفضلة":"⭐ أضف للمفضلة"}</button>`;
+$("fv").onclick=()=>{FAV=FAV.includes(g.n)?FAV.filter(x=>x!==g.n):[...FAV,g.n];saveFav();$("fv").textContent=FAV.includes(g.n)?"إزالة من المفضلة":"⭐ أضف للمفضلة";render()};
+$("dlg").showModal()};
+$("dx").onclick=()=>$("dlg").close();
+render();
+
+/* التنقل */
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===b));
+["store","deals","play","chat"].forEach(v=>$("v-"+v).classList.toggle("hidden",v!==b.dataset.v));
+if(b.dataset.v!=="play")stopSnake();else showGame(curG);if(b.dataset.v==="chat")window.initChat&&window.initChat();if(b.dataset.v==="deals")loadDeals()});
+
+/* العروض */
+const okU=u=>/^https:\/\//.test(u||"");
+function dealCard(img,title,line,url,badge){const a=document.createElement("a");a.className="card";a.href=okU(url)?url:"#";a.target="_blank";a.rel="noopener noreferrer";
+if(okU(img)){const i=document.createElement("img");i.src=img;i.alt="";i.loading="lazy";i.className="di";a.append(i)}
+const c=document.createElement("div");c.className="ci";const b=document.createElement("b");b.textContent=title;const l=document.createElement("span");l.textContent=line;c.append(b,l);
+if(badge){const t=document.createElement("span");t.className="tag os";t.textContent=badge;c.append(document.createElement("br"),t)}
+a.append(c);return a}
+function fallback(el,txt,url){el.textContent="";const p=document.createElement("p");p.className="sub";p.textContent=txt;const a=document.createElement("a");a.className="btn";a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.textContent="افتح الصفحة الرسمية";el.append(p,a)}
+let dealsLoaded=false;
+async function loadDeals(){if(dealsLoaded)return;dealsLoaded=true;
+$("free").textContent="جارٍ التحميل...";$("steam").textContent="جارٍ التحميل...";
+try{const r=await fetch("https://www.gamerpower.com/api/giveaways?platform=epic-games-store&type=game");if(!r.ok)throw 0;const d=await r.json();if(!Array.isArray(d)||!d.length)throw 0;
+$("free").textContent="";d.slice(0,12).forEach(g=>$("free").append(dealCard(g.thumbnail,g.title,(g.worth&&g.worth!=="N/A"?"كانت "+g.worth+" — ":"")+"مجانية الآن",g.open_giveaway_url,g.end_date&&g.end_date!=="N/A"?"تنتهي "+String(g.end_date).slice(0,10):"Epic")))}
+catch(e){fallback($("free"),"تعذّر تحميل القائمة الآن. يمكنك رؤية ألعاب Epic المجانية مباشرة.","https://store.epicgames.com/free-games")}
+try{const r=await fetch("https://www.cheapshark.com/api/1.0/deals?storeID=1&onSale=1&sortBy=Deal%20Rating&pageSize=24");if(!r.ok)throw 0;const d=await r.json();if(!Array.isArray(d)||!d.length)throw 0;
+$("steam").textContent="";d.forEach(g=>$("steam").append(dealCard(g.thumb,g.title,"$"+g.salePrice+" بدل $"+g.normalPrice,g.steamAppID?"https://store.steampowered.com/app/"+encodeURIComponent(g.steamAppID):"https://store.steampowered.com/specials","-"+Math.round(+g.savings)+"%")))}
+catch(e){fallback($("steam"),"تعذّر تحميل العروض الآن. يمكنك رؤية عروض Steam مباشرة.","https://store.steampowered.com/specials")}}
+
+/* الألعاب */
+let curG="snake",snakeT=null;
+document.querySelectorAll(".tabs2 .chip").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs2 .chip").forEach(x=>x.classList.toggle("on",x===b));curG=b.dataset.g;showGame(curG)});
+function stopSnake(){clearInterval(snakeT);snakeT=null;document.onkeydown=null}
+function best(k,v){try{if(v!==undefined&&v>(+localStorage.getItem(k)||0))localStorage.setItem(k,v);return +localStorage.getItem(k)||0}catch(e){return 0}}
+function showGame(g){stopSnake();g==="snake"?snake():memory()}
+function snake(){const S=$("stage"),N=20,C=16;
+S.innerHTML=`<p>النقاط: <b id="sc">0</b> — الأفضل: <b id="bs">${best("ludino_snake")}</b></p><canvas id="cv" width="${N*C}" height="${N*C}" aria-label="لعبة الثعبان"></canvas><p class="note">الأسهم أو اسحب بإصبعك للتحكم</p><button class="btn" id="rs">ابدأ من جديد</button>`;
+const cx=$("cv").getContext("2d");let s,d,nd,f,sc;
+const food=()=>{do{f={x:Math.random()*N|0,y:Math.random()*N|0}}while(s.some(p=>p.x===f.x&&p.y===f.y))};
+const start=()=>{s=[{x:10,y:10},{x:9,y:10},{x:8,y:10}];d=nd={x:1,y:0};sc=0;$("sc").textContent=0;food();clearInterval(snakeT);snakeT=setInterval(tick,110)};
+const turn=v=>{if(v.x!==-d.x||v.y!==-d.y)nd=v};
+function tick(){d=nd;const h={x:s[0].x+d.x,y:s[0].y+d.y};
+if(h.x<0||h.y<0||h.x>=N||h.y>=N||s.some(p=>p.x===h.x&&p.y===h.y)){clearInterval(snakeT);$("bs").textContent=best("ludino_snake",sc);return}
+s.unshift(h);if(h.x===f.x&&h.y===f.y){sc++;$("sc").textContent=sc;food()}else s.pop();
+cx.fillStyle="#05070b";cx.fillRect(0,0,N*C,N*C);cx.fillStyle="#ef4444";cx.fillRect(f.x*C+2,f.y*C+2,C-4,C-4);
+s.forEach((p,i)=>{cx.fillStyle=i?"#ff9a3c":"#ff6a1a";cx.fillRect(p.x*C+1,p.y*C+1,C-2,C-2)})}
+document.onkeydown=e=>{const m={ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0}}[e.key];if(m){e.preventDefault();turn(m)}};
+let t0;const cv=$("cv");
+cv.addEventListener("touchstart",e=>{t0=e.touches[0]},{passive:true});
+cv.addEventListener("touchend",e=>{if(!t0)return;const t=e.changedTouches[0],dx=t.clientX-t0.clientX,dy=t.clientY-t0.clientY;
+if(Math.max(Math.abs(dx),Math.abs(dy))<20)return;Math.abs(dx)>Math.abs(dy)?turn({x:dx>0?1:-1,y:0}):turn({x:0,y:dy>0?1:-1})});
+$("rs").onclick=start;start()}
+function memory(){const E=["🎮","👾","🚀","🏆","🎯","⚔️"],S=$("stage");let deck=[...E,...E].sort(()=>Math.random()-.5),open=[],lock=false,moves=0,done=0;
+S.innerHTML=`<p>الحركات: <b id="mv">0</b> — الأفضل (الأقل): <b id="mb2">${best("ludino_mem")?1000-best("ludino_mem"):"-"}</b></p><div class="mem" id="mm">${deck.map((e,i)=>`<button class="mc" data-i="${i}" aria-label="بطاقة">?</button>`).join("")}</div><button class="btn" id="rm">ابدأ من جديد</button>`;
+$("rm").onclick=memory;
+$("mm").onclick=e=>{const b=e.target.closest(".mc");if(!b||lock||b.classList.contains("up"))return;
+b.textContent=deck[b.dataset.i];b.classList.add("up");open.push(b);
+if(open.length===2){moves++;$("mv").textContent=moves;const[a,c]=open;
+if(deck[a.dataset.i]===deck[c.dataset.i]){open=[];if(++done===E.length){best("ludino_mem",1000-moves);$("mb2").textContent=1000-best("ludino_mem")}}
+else{lock=true;setTimeout(()=>{a.textContent=c.textContent="?";a.classList.remove("up");c.classList.remove("up");open=[];lock=false},700)}}}}
+</script>
+
+<script type="module">
+/* ضع إعدادات مشروعك هنا من Firebase Console */
+const cfg={apiKey:"AIzaSyC0rA0NufCRM2uMeP5z37dcjMbC4oCANOg",authDomain:"ludino-bca0a.firebaseapp.com",projectId:"ludino-bca0a",storageBucket:"ludino-bca0a.firebasestorage.app",messagingSenderId:"234584619277",appId:"1:234584619277:web:b0427fb8c356991b83d844"};
+
+const $=i=>document.getElementById(i);
+const CH=[["general","# عام"],["lfg","# البحث عن فريق"],["news","# أخبار الألعاب"],["media","# صور ومقاطع"]];
+let started=false;
+window.initChat=async()=>{
+if(started)return;
+if(cfg.apiKey.startsWith("YOUR")){$("setup").classList.remove("hidden");return}
+started=true;
+const V="https://www.gstatic.com/firebasejs/10.12.2/";
+const [{initializeApp},A,F]=await Promise.all([import(V+"firebase-app.js"),import(V+"firebase-auth.js"),import(V+"firebase-firestore.js")]);
+const app=initializeApp(cfg),auth=A.getAuth(app),db=F.getFirestore(app);
+let cur="general",unsub=null;
+const ERR={"auth/invalid-email":"البريد غير صحيح.","auth/weak-password":"كلمة المرور ضعيفة.","auth/email-already-in-use":"البريد مسجل مسبقًا.","auth/invalid-credential":"البريد أو كلمة المرور خاطئة.","auth/missing-password":"اكتب كلمة المرور."};
+const fail=e=>{$("er").textContent=ERR[e.code]||"تعذّر تنفيذ الطلب. حاول مرة أخرى."};
+$("si").onclick=()=>A.signInWithEmailAndPassword(auth,$("em").value.trim(),$("pw").value).catch(fail);
+$("su").onclick=async()=>{const n=$("nm").value.trim();if(!n){$("er").textContent="اكتب اسم اللاعب.";return}
+try{const c=await A.createUserWithEmailAndPassword(auth,$("em").value.trim(),$("pw").value);await A.updateProfile(c.user,{displayName:n})}catch(e){fail(e)}};
+$("so").onclick=()=>A.signOut(auth);
+$("chs").innerHTML=CH.map(c=>`<button class="chip" data-c="${c[0]}">${c[1]}</button>`).join("");
+function open(c){cur=c;document.querySelectorAll("#chs .chip").forEach(b=>b.classList.toggle("on",b.dataset.c===c));
+if(unsub)unsub();$("msgs").textContent="";
+const q=F.query(F.collection(db,"channels",c,"messages"),F.orderBy("createdAt","asc"),F.limit(100));
+unsub=F.onSnapshot(q,s=>{const box=$("msgs");box.textContent="";s.forEach(d=>{const m=d.data(),r=document.createElement("div");r.className="m";
+const b=document.createElement("b");b.textContent=m.name||"لاعب";if(m.uid===auth.currentUser.uid)b.className="me2";
+const t=document.createElement("small");t.textContent=m.createdAt?m.createdAt.toDate().toLocaleTimeString("ar",{hour:"2-digit",minute:"2-digit"}):"";
+const p=document.createElement("p");p.textContent=m.text;r.append(b,t,p);box.append(r)});box.scrollTop=box.scrollHeight},()=>{$("msgs").textContent="تعذّرت قراءة الرسائل. تحقق من قواعد الأمان."})}
+$("chs").onclick=e=>{const b=e.target.closest("[data-c]");if(b)open(b.dataset.c)};
+async function send(){const v=$("tx").value.trim();if(!v)return;$("tx").value="";
+try{await F.addDoc(F.collection(db,"channels",cur,"messages"),{text:v,uid:auth.currentUser.uid,name:auth.currentUser.displayName||"لاعب",createdAt:F.serverTimestamp()})}catch(e){$("tx").value=v}}
+$("sd").onclick=send;$("tx").addEventListener("keydown",e=>{if(e.key==="Enter")send()});
+A.onAuthStateChanged(auth,u=>{$("auth").classList.toggle("hidden",!!u);$("chat").classList.toggle("hidden",!u);
+if(u)open(cur);else if(unsub){unsub();unsub=null}});
+};
+if(!document.getElementById("v-chat").classList.contains("hidden"))window.initChat();
+</script>
+</body>
+</html>
