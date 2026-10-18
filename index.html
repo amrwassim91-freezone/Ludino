@@ -1,277 +1,461 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Ludino — منصة الألعاب المجانية</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ff6b20">
+<meta name="description" content="لودينو: الألعاب المجانية للحاسوب والهاتف وXbox وPlayStation، مع الروابط الرسمية لتنزيلها، وما يُوزَّع مجانًا هذا الأسبوع، وصالون للاعبين.">
+<title>Ludino — العب أكثر</title>
 <style>
-:root{--bg:#0a0d14;--pn:#0f141e;--pn2:#151c29;--ln:#1c2433;--tx:#eef2f8;--mu:#8b97ab;--or:#ff6a1a;--or2:#ff9a3c;--er:#f87171}
-@media (prefers-color-scheme:light){:root{--bg:#f4f1ee;--pn:#fff;--pn2:#f1ece7;--ln:#e3dcd4;--tx:#1b1713;--mu:#6b6258;--or:#d4500a;--or2:#e07a1f;--er:#c0262d}}
+:root{--bg:#05080d;--side:#080f17;--card:#0d151f;--card2:#151f2d;--line:#263547;--text:#f5f7fb;--muted:#9aa8b8;--orange:#ff6b20;--blue:#4d65ed;--tag:#1b2a3b;--hov:#172130;--ok:#34d399;--bad:#f87171}
+[data-theme=light]{--bg:#eef1f5;--side:#ffffff;--card:#ffffff;--card2:#e9edf2;--line:#d3dae3;--text:#17202a;--muted:#5c6b7a;--tag:#e3e8ee;--hov:#eef1f5}
 *{box-sizing:border-box}
-html,body{margin:0;height:100%}
-body{background:var(--bg);color:var(--tx);font-family:Cairo,system-ui,sans-serif}
-button,input{font:inherit;color:inherit}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Tahoma,sans-serif;line-height:1.6}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer}
-:is(button,input,a):focus-visible{outline:3px solid var(--or2);outline-offset:2px}
-.btn{background:linear-gradient(135deg,var(--or),var(--or2));color:#1a0d00;border:0;border-radius:10px;padding:10px 16px;font-weight:800;text-decoration:none;display:inline-block;text-align:center}
-.btn.o{background:none;border:1px solid var(--ln);color:var(--tx)}
-input{width:100%;padding:11px 12px;border-radius:10px;background:var(--pn2);border:1px solid var(--ln);margin:6px 0}
-.hidden{display:none!important}
-#shell{display:grid;grid-template-columns:200px 1fr;height:100%}
-#nav{background:var(--pn);border-inline-end:1px solid var(--ln);padding:18px 12px;display:flex;flex-direction:column;gap:6px}
-.logo{font-weight:800;font-size:24px;margin-bottom:12px}
-.logo i{font-style:normal;color:var(--or)}
-.tab{background:none;border:0;text-align:start;padding:11px 14px;border-radius:10px;color:var(--mu);font-weight:600}
-.tab.on,.tab:hover{background:var(--pn2);color:var(--tx)}
-.tab.on{border-inline-start:3px solid var(--or)}
-main{overflow-y:auto;padding:20px;padding-top:calc(20px + env(safe-area-inset-top,0px))}
-h2{margin:0 0 4px}.sub{color:var(--mu);margin:0 0 16px;font-size:14px}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px}
-.chip{background:var(--pn2);border:1px solid var(--ln);border-radius:20px;padding:6px 14px;font-size:14px}
-.chip.on{background:var(--or);color:#1a0d00;border-color:var(--or);font-weight:800}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
-.card{background:var(--pn);border:1px solid var(--ln);border-radius:14px;overflow:hidden;cursor:pointer;text-align:start;padding:0;color:inherit}
-.card:hover{border-color:var(--or)}
-.cv{aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;padding:10px;text-align:center;font-weight:800;font-size:20px;color:#fff;text-shadow:0 2px 8px #0008}
-.ci{padding:10px 12px;font-size:13px;color:var(--mu)}.ci b{display:block;color:var(--tx);font-size:15px}
-.tag{display:inline-block;background:var(--pn2);border-radius:6px;padding:1px 7px;font-size:11px;margin:4px 3px 0 0;color:var(--mu)}
-.tag.os{color:#4ade80}
-dialog{background:var(--pn);color:var(--tx);border:1px solid var(--ln);border-radius:16px;max-width:460px;width:92%;padding:0}
-dialog::backdrop{background:#000a}
-.dh{height:150px;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;color:#fff;text-shadow:0 2px 10px #0008;padding:10px;text-align:center}
-.db{padding:16px}.db p{line-height:1.8;color:var(--mu)}
-.stores{display:flex;flex-direction:column;gap:8px;margin:12px 0}
-.note{font-size:12px;color:var(--mu);margin-top:8px}
-.tabs2{display:flex;gap:8px;margin-bottom:14px}
-.stage{background:var(--pn);border:1px solid var(--ln);border-radius:14px;padding:16px;text-align:center}
-canvas{background:#05070b;border-radius:10px;max-width:100%;touch-action:none;border:1px solid var(--ln)}
-.mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:340px;margin:12px auto}
-.mc{aspect-ratio:1;border-radius:10px;border:1px solid var(--ln);background:var(--pn2);font-size:30px}
-.mc.up{background:var(--or);}
-.auth{max-width:380px;margin:4vh auto;padding:22px;background:var(--pn);border:1px solid var(--ln);border-radius:16px}
-.err{color:var(--er);font-size:13px;min-height:20px}
-#chat{display:flex;flex-direction:column;height:calc(100vh - 150px);min-height:340px;background:var(--pn);border:1px solid var(--ln);border-radius:14px;overflow:hidden}
-#msgs{flex:1;overflow-y:auto;padding:12px 16px}
-.m{padding:5px 0}.m b{font-size:14px}.m b.me2{color:var(--or2)}.m small{color:var(--mu);margin-inline-start:8px;font-size:11px}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.app{display:grid;grid-template-columns:210px 1fr;min-height:100vh}
+#side{position:sticky;top:0;height:100vh;background:var(--side);border-left:1px solid var(--line);padding:20px 12px;display:flex;flex-direction:column}
+.logo{font-size:26px;font-weight:bold;color:var(--orange);margin:0 8px 26px;line-height:1.2}
+.logo small{display:block;font-size:11px;color:var(--muted);font-weight:normal;margin-top:3px}
+.lnk{display:flex;gap:10px;align-items:center;padding:12px 10px;border-radius:9px;color:var(--muted);margin-bottom:4px}
+.lnk:hover,.lnk.on{color:var(--text);background:var(--hov)}
+.lnk.on{border-right:3px solid var(--orange)}
+.sidefoot{margin-top:auto;font-size:11px;color:var(--muted);padding:0 8px;line-height:1.7}
+#view{padding:24px;max-width:1400px;width:100%;margin:0 auto;min-width:0}
+h1{font-size:30px;margin:0 0 6px;line-height:1.25}
+h2{font-size:21px;margin:30px 0 12px}
+.sub{color:var(--muted);margin:0 0 18px}
+.muted{color:var(--muted);font-size:13px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:9px;padding:11px 18px;background:linear-gradient(135deg,var(--orange),#ffac4c);color:#211006;font-weight:bold;text-align:center}
+.btn.sec{background:var(--card2);color:var(--text);border:1px solid var(--line)}
+.btn.big{padding:15px 28px;font-size:17px}
+.btn:hover{filter:brightness(1.08)}
+.btn[disabled]{opacity:.5;cursor:default}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}
+.panel h3{margin:0 0 10px}
+input,select,textarea{background:var(--card2);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:11px 12px;max-width:100%}
+textarea{width:100%;min-height:80px;resize:vertical}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.bar input[type=search]{flex:1;min-width:200px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px;scrollbar-width:thin}
+.chip{flex:0 0 auto;border:1px solid var(--line);background:var(--card2);color:var(--muted);border-radius:25px;padding:8px 15px;font-size:14px}
+.chip.on{background:var(--orange);color:#1b0b03;border-color:var(--orange);font-weight:bold}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:transform .2s,border-color .2s}
+.card:hover{border-color:var(--orange);transform:translateY(-3px)}
+.card>a{display:block}
+.cover{position:relative;height:120px;background:var(--card2);overflow:hidden}
+.cover img{width:100%;height:100%;object-fit:cover;display:block}
+.cover:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 40%,#000b)}
+.cover .nm{position:absolute;z-index:1;bottom:8px;right:10px;left:10px;font-weight:bold;font-size:15px;color:#fff;text-shadow:0 1px 4px #000}
+.wish{position:absolute;z-index:2;top:8px;left:8px;width:36px;height:36px;border-radius:50%;border:0;background:#000a;color:#fff;font-size:17px}
+.wish.on{color:var(--orange)}
+.info{padding:11px 12px;color:var(--muted);font-size:12px}
+.info b{display:block;color:var(--text);font-size:14px;margin-bottom:3px}
+.tag{display:inline-block;font-style:normal;background:var(--tag);border-radius:5px;padding:3px 7px;margin:6px 0 0 4px;font-size:10px}
+.tag.os{background:#14532d;color:#bbf7d0}
+.tag.free{background:#064e3b;color:#a7f3d0}
+.hero{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);margin-bottom:18px;min-height:260px;background:#0d151f}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(to left,rgba(5,8,13,.93) 28%,rgba(5,8,13,.1))}
+.hx{position:relative;z-index:1;padding:34px;max-width:560px;min-height:260px;display:flex;flex-direction:column;justify-content:center;gap:10px;color:#fff;align-items:flex-start}
+.hx h2{margin:0;font-size:36px}
+.hx p{margin:0;color:#dbe3ee}
+.hx .badge{background:rgba(255,107,32,.2);color:#ffb27d;border:1px solid rgba(255,107,32,.4);padding:3px 11px;border-radius:20px;font-size:12px}
+.dots{position:absolute;z-index:2;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+.dots button{width:10px;height:10px;border-radius:50%;border:0;background:#fff6;padding:0}
+.dots button.on{background:var(--orange);width:24px;border-radius:6px}
+.promo{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:20px;margin:26px 0;border:1px solid #554629;border-radius:12px;background:linear-gradient(120deg,#19170f,#1c1408);color:#f5f7fb}
+.promo p{margin:4px 0 0;color:#cfc4a8}
+[data-theme=light] .promo{background:#fff6e8;border-color:#e8cf9b;color:#17202a}
+[data-theme=light] .promo p{color:#6b5a30}
+.back{background:none;border:0;color:var(--muted);padding:4px 0;margin-bottom:10px;font-size:15px}
+.back:hover{color:var(--text)}
+.ghead{position:relative;border-radius:16px;overflow:hidden;min-height:240px;border:1px solid var(--line);margin-bottom:18px;background:var(--card2)}
+.ghead img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ghead:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 15%,#000d)}
+.gt{position:absolute;z-index:1;right:22px;bottom:18px;left:22px;color:#fff}
+.gt h1{margin:0 0 8px;text-shadow:0 2px 8px #000}
+.gt .tag{background:#000a;color:#fff}
+.gcols{display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start}
+.lead{font-size:18px;margin:0 0 18px}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.note{font-size:13px;color:var(--muted);margin:6px 0 14px}
+dl{margin:0}
+dl div{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+dl div:last-child{border:0}
+dt{color:var(--muted)}
+dd{margin:0;text-align:left}
+.rev{border-top:1px solid var(--line);padding:12px 0}
+.rev b{margin-left:8px}
+.rev .up{color:var(--ok)}.rev .down{color:var(--bad)}
+.rev p{margin:4px 0 0;white-space:pre-wrap;word-break:break-word}
+.vote{display:flex;gap:8px;margin-bottom:10px}
+.err{color:var(--bad);font-size:13px;min-height:20px;margin:6px 0}
+.live .info .worth{display:block}
+.live .info .left{display:block;color:var(--orange);font-weight:bold;margin-top:4px}
+.auth{max-width:380px}
+.auth input{width:100%;margin:6px 0}
+.chbar{display:flex;gap:6px;margin-bottom:10px;overflow-x:auto}
+.msgs{height:min(420px,55vh);overflow-y:auto;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.m{padding:5px 0}.m b{font-size:14px}.m b.me{color:var(--orange)}.m small{color:var(--muted);margin-right:8px;font-size:11px}
 .m p{margin:2px 0 0;white-space:pre-wrap;word-break:break-word}
-#bar{display:flex;gap:8px;padding:10px;border-top:1px solid var(--ln)}#bar input{margin:0}
-.chbar{display:flex;gap:6px;padding:10px;border-bottom:1px solid var(--ln);overflow-x:auto;align-items:center}
-.chbar .chip{white-space:nowrap}
-.di{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:var(--pn2)}
-.card .ci span{display:inline}
-a.card{text-decoration:none}
-@media(max-width:760px){
-#shell{grid-template-columns:1fr;grid-template-rows:1fr auto}
-#nav{order:2;flex-direction:row;justify-content:space-around;border-inline-end:0;border-top:1px solid var(--ln);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
-#nav .logo{display:none}.tab{flex:1;text-align:center;padding:9px 4px;font-size:13px}.tab.on{border-inline-start:0;border-top:3px solid var(--or)}
-main{padding:14px;padding-top:calc(14px + env(safe-area-inset-top,0px))}
-#chat{height:calc(100vh - 230px)}}
+.send{display:flex;gap:8px;margin-top:10px}.send input{flex:1}
+#toast{position:fixed;bottom:24px;left:24px;background:var(--card);border:1px solid var(--orange);padding:12px 20px;border-radius:12px;box-shadow:0 10px 30px #0008;z-index:99;transform:translateY(120px);opacity:0;transition:transform .3s,opacity .3s;max-width:80vw}
+#toast.show{transform:none;opacity:1}
+#tabs{display:none}
+footer.legal{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+@media(max-width:900px){
+ .app{display:block}
+ #side{display:none}
+ #view{padding:16px 14px 92px}
+ #tabs{display:flex;position:fixed;bottom:0;right:0;left:0;z-index:20;background:var(--side);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
+ #tabs a{flex:1;text-align:center;font-size:11px;color:var(--muted);padding:5px 2px;display:flex;flex-direction:column;gap:1px}
+ #tabs a b{font-size:19px;font-weight:normal}
+ #tabs a.on{color:var(--orange)}
+ h1{font-size:25px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .cover{height:100px}
+ .hx{padding:20px}.hx h2{font-size:27px}
+ .gcols{grid-template-columns:1fr}
+ .ghead{min-height:200px}
+ .cta .btn.big{flex:1 1 100%}
+ #toast{bottom:90px;left:12px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<div id="shell">
-<nav id="nav" aria-label="التنقل">
-<div class="logo">Ludi<i>no</i></div>
-<button class="tab on" data-v="store">🛒 المتجر</button>
-<button class="tab" data-v="deals">🔥 العروض</button>
-<button class="tab" data-v="play">🕹️ العب الآن</button>
-<button class="tab" data-v="chat">💬 المجتمع</button>
+<div class="app">
+ <nav id="side" aria-label="التنقل">
+  <div class="logo">Ludino<small>العب أكثر.</small></div>
+  <a class="lnk" data-nav="" href="#/">⌂ <span>المتجر</span></a>
+  <a class="lnk" data-nav="free" href="#/free">🎁 <span>بلاش هذا الأسبوع</span></a>
+  <a class="lnk" data-nav="pick" href="#/pick">✦ <span>اقترح لي</span></a>
+  <a class="lnk" data-nav="chat" href="#/chat">💬 <span>الصالون</span></a>
+  <a class="lnk" data-nav="me" href="#/me">👤 <span>حسابي</span></a>
+  <div class="sidefoot">الألعاب وأسماؤها وصورها ملك أصحابها. لودينو دليل يوصلك للمتاجر الرسمية.</div>
+ </nav>
+ <main id="view"></main>
+</div>
+<nav id="tabs" aria-label="التنقل">
+ <a data-nav="" href="#/"><b>⌂</b>المتجر</a>
+ <a data-nav="free" href="#/free"><b>🎁</b>بلاش</a>
+ <a data-nav="pick" href="#/pick"><b>✦</b>اقترح</a>
+ <a data-nav="chat" href="#/chat"><b>💬</b>الصالون</a>
+ <a data-nav="me" href="#/me"><b>👤</b>حسابي</a>
 </nav>
-<main>
-<!-- المتجر -->
-<section id="v-store">
-<h2>متجر الألعاب المجانية</h2>
-<p class="sub">كل الأزرار تفتح المتجر الرسمي للعبة حسب جهازك لتنزيلها بشكل قانوني وآمن.</p>
-<input id="q" placeholder="ابحث عن لعبة..." aria-label="بحث">
-<div class="chips" id="chips"></div>
-<div class="grid" id="grid"></div>
-</section>
-
-<!-- العروض -->
-<section id="v-deals" class="hidden">
-<h2>🎁 مجانية هذا الأسبوع</h2>
-<p class="sub">ألعاب مجانية على Epic Games Store وغيره، تتحدث تلقائيًا وتفتح صفحة الاستلام الرسمية.</p>
-<div class="grid" id="free"></div>
-<p class="note">البيانات من <a href="https://www.gamerpower.com" target="_blank" rel="noopener noreferrer" style="color:var(--or2)">GamerPower</a></p>
-<h2 style="margin-top:28px">🔥 عروض Steam</h2>
-<p class="sub">أفضل التخفيضات الحالية حسب تقييم العرض.</p>
-<div class="grid" id="steam"></div>
-<p class="note">البيانات من <a href="https://www.cheapshark.com" target="_blank" rel="noopener noreferrer" style="color:var(--or2)">CheapShark</a></p>
-</section>
-
-<!-- العب الآن -->
-<section id="v-play" class="hidden">
-<h2>العب الآن داخل الموقع</h2>
-<p class="sub">ألعاب حقيقية تعمل مباشرة بدون تنزيل.</p>
-<div class="tabs2"><button class="chip on" data-g="snake">🐍 الثعبان</button><button class="chip" data-g="mem">🧠 الذاكرة</button></div>
-<div class="stage" id="stage"></div>
-</section>
-
-<!-- المجتمع -->
-<section id="v-chat" class="hidden">
-<h2>مجتمع لودينو</h2>
-<p class="sub">دردشة مباشرة مع اللاعبين، قنوات وحسابات حقيقية.</p>
-<div id="setup" class="auth hidden" style="line-height:1.9"><b>إعداد الدردشة مطلوب</b><br>أنشئ مشروع Firebase مجانيًا، فعّل Email/Password وFirestore، ثم الصق إعداداتك مكان <code>cfg</code> في آخر الملف، وقواعد الأمان من ملف firestore.rules.</div>
-<div id="auth" class="auth hidden">
-<input id="nm" placeholder="اسم اللاعب (للتسجيل فقط)" maxlength="20" aria-label="اسم اللاعب">
-<input id="em" type="email" placeholder="البريد الإلكتروني" dir="ltr" aria-label="البريد">
-<input id="pw" type="password" placeholder="كلمة المرور (6 أحرف على الأقل)" dir="ltr" aria-label="كلمة المرور">
-<p class="err" id="er" role="alert"></p>
-<button class="btn" id="si">دخول</button> <button class="btn o" id="su">إنشاء حساب</button></div>
-<div id="chat" class="hidden">
-<div class="chbar" id="chs"></div>
-<div id="msgs" aria-live="polite"></div>
-<div id="bar"><input id="tx" placeholder="اكتب رسالة..." maxlength="1000" aria-label="رسالة"><button class="btn" id="sd">إرسال</button><button class="btn o" id="so">خروج</button></div>
-</div>
-</section>
-</main>
-</div>
-
-<dialog id="dlg"><div class="dh" id="dh"></div><div class="db"><p id="dd"></p><div id="dt"></div><div class="stores" id="ds"></div><p class="note">الملكية الكاملة للعبة تعود لشركتها، ولودينو يوجّهك للمتجر الرسمي فقط.</p><button class="btn o" id="dx" style="width:100%">إغلاق</button></div></dialog>
+<div id="toast" role="status"></div>
+<noscript><p style="padding:20px">يحتاج الموقع إلى تشغيل جافاسكربت.</p></noscript>
 
 <script>
-const $=i=>document.getElementById(i);
-const PL={pc:"بيسي",mobile:"هاتف",xbox:"Xbox",ps:"PlayStation"};
-const G=[
-{n:"Fortnite",g:"باتل رويال",p:["pc","mobile","xbox","ps"],c:["#6d28d9","#2563eb"],d:"لعبة باتل رويال شهيرة مع بناء وأحداث موسمية، وتدعم اللعب المشترك بين الأجهزة."},
-{n:"Genshin Impact",g:"عالم مفتوح",p:["pc","mobile","ps"],c:["#0ea5e9","#14b8a6"],d:"مغامرة عالم مفتوح بقتال عناصر وشخصيات متعددة وقصة غنية."},
-{n:"Apex Legends",g:"باتل رويال",p:["pc","xbox","ps","mobile"],c:["#b91c1c","#f97316"],d:"باتل رويال سريعة بأبطال لكل منهم قدرات خاصة وفرق من ثلاثة."},
-{n:"Rocket League",g:"رياضة",p:["pc","xbox","ps"],c:["#1d4ed8","#f59e0b"],d:"كرة قدم بالسيارات، سهلة التعلم ويصعب إتقانها."},
-{n:"Warframe",g:"أكشن تعاوني",p:["pc","xbox","ps","mobile"],c:["#475569","#06b6d4"],d:"أكشن تعاوني فضائي بمهمات وتخصيص عميق للمحاربين."},
-{n:"Counter-Strike 2",g:"تصويب",p:["pc"],c:["#92400e","#ca8a04"],d:"أشهر ألعاب التصويب التكتيكي بين فريقين."},
-{n:"Dota 2",g:"مواجهات",p:["pc"],c:["#7f1d1d","#be123c"],d:"لعبة MOBA استراتيجية بعشرات الأبطال ومباريات تنافسية."},
-{n:"Roblox",g:"مجتمع وإبداع",p:["pc","mobile","xbox"],c:["#dc2626","#7c3aed"],d:"منصة ملايين الألعاب التي يصنعها اللاعبون أنفسهم."},
-{n:"Brawl Stars",g:"أكشن سريع",p:["mobile"],c:["#eab308","#ea580c"],d:"معارك قصيرة بفرق من ثلاثة وأوضاع متنوعة."},
-{n:"Call of Duty: Warzone",g:"باتل رويال",p:["pc","xbox","ps"],c:["#14532d","#374151"],d:"باتل رويال ضخمة بخريطة كبيرة وأسلحة متنوعة."},
-{n:"Fall Guys",g:"حفلة جماعية",p:["pc","xbox","ps"],c:["#ec4899","#8b5cf6"],d:"سباقات ومراحل مرحة بعشرات اللاعبين."},
-{n:"Destiny 2",g:"أكشن وخيال علمي",p:["pc","xbox","ps"],c:["#1e3a8a","#0891b2"],d:"تصويب خيال علمي بغارات تعاونية وعالم مشترك."},
-{n:"SuperTuxKart",g:"سباقات",p:["pc"],c:["#16a34a","#0ea5e9"],d:"سباقات كارت مرحة مفتوحة المصدر ومجانية بالكامل.",o:"https://supertuxkart.net"},
-{n:"0 A.D.",g:"استراتيجية",p:["pc"],c:["#a16207","#78350f"],d:"استراتيجية تاريخية فخمة مفتوحة المصدر.",o:"https://play0ad.com"},
-{n:"OpenRA",g:"استراتيجية",p:["pc"],c:["#991b1b","#1f2937"],d:"إحياء مفتوح المصدر لألعاب الاستراتيجية الكلاسيكية.",o:"https://www.openra.net"}
-];
+(function(){
+"use strict";
+const $=(s,r)=>(r||document).querySelector(s);
+const $$=(s,r)=>Array.from((r||document).querySelectorAll(s));
+const view=$("#view");
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const slug=n=>n.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+const ls={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
 const dev=/iPhone|iPad|iPod/i.test(navigator.userAgent)?"ios":/Android/i.test(navigator.userAgent)?"and":"pc";
-let FAV=[];try{FAV=JSON.parse(localStorage.getItem("ludino_fav")||"[]")}catch(e){}
-const saveFav=()=>{try{localStorage.setItem("ludino_fav",JSON.stringify(FAV))}catch(e){}};
-let flt="all";
-const CH=[["all","الكل"],["pc","بيسي"],["mobile","هاتف"],["xbox","Xbox"],["ps","PlayStation"],["fav","⭐ مفضلتي"],["os","مفتوحة المصدر"]];
-$("chips").innerHTML=CH.map(c=>`<button class="chip${c[0]==="all"?" on":""}" data-f="${c[0]}">${c[1]}</button>`).join("");
-const grad=g=>`linear-gradient(135deg,${g.c[0]},${g.c[1]})`;
-function render(){const t=$("q").value.trim().toLowerCase();
-const L=G.filter(g=>(flt==="all"||(flt==="fav"?FAV.includes(g.n):flt==="os"?!!g.o:g.p.includes(flt)))&&g.n.toLowerCase().includes(t));
-$("grid").innerHTML=L.length?L.map(g=>`<button class="card" data-n="${g.n}"><div class="cv" style="background:${grad(g)}">${g.n}</div><div class="ci"><b>${g.n}</b>${g.g}<br>${g.p.map(p=>`<span class="tag">${PL[p]}</span>`).join("")}${g.o?'<span class="tag os">مفتوحة المصدر</span>':""}</div></button>`).join(""):'<p class="sub">لا توجد نتائج.</p>'}
-$("chips").onclick=e=>{const b=e.target.closest("[data-f]");if(!b)return;flt=b.dataset.f;document.querySelectorAll("#chips .chip").forEach(x=>x.classList.toggle("on",x===b));render()};
-$("q").oninput=render;
-function stores(g){const q=encodeURIComponent(g.n),a=[];
-if(g.o)a.push(["🌐 الموقع الرسمي للمطور",g.o,true]);
-if(g.p.includes("pc")&&!g.o){a.push(["Steam","https://store.steampowered.com/search/?term="+q,dev==="pc"]);a.push(["Epic Games","https://store.epicgames.com/browse?q="+q,false])}
-if(g.p.includes("mobile")){a.push(["App Store","https://apps.apple.com/search?term="+q,dev==="ios"]);a.push(["Google Play","https://play.google.com/store/search?c=apps&q="+q,dev==="and"])}
-if(g.p.includes("xbox"))a.push(["Microsoft / Xbox Store","https://www.xbox.com/search?q="+q,false]);
-if(g.p.includes("ps"))a.push(["PlayStation Store","https://store.playstation.com/search/"+q,false]);
-return a}
-$("grid").onclick=e=>{const b=e.target.closest("[data-n]");if(!b)return;const g=G.find(x=>x.n===b.dataset.n);
-$("dh").style.background=grad(g);$("dh").textContent=g.n;$("dd").textContent=g.d;
-$("dt").innerHTML=g.p.map(p=>`<span class="tag">${PL[p]}</span>`).join("");
-const isF=FAV.includes(g.n);
-$("ds").innerHTML=stores(g).map(s=>`<a class="btn${s[2]?"":" o"}" href="${s[1]}" target="_blank" rel="noopener noreferrer">${s[2]?"⬇ ":""}${s[0]}</a>`).join("")+`<button class="btn o" id="fv">${isF?"إزالة من المفضلة":"⭐ أضف للمفضلة"}</button>`;
-$("fv").onclick=()=>{FAV=FAV.includes(g.n)?FAV.filter(x=>x!==g.n):[...FAV,g.n];saveFav();$("fv").textContent=FAV.includes(g.n)?"إزالة من المفضلة":"⭐ أضف للمفضلة";render()};
-$("dlg").showModal()};
-$("dx").onclick=()=>$("dlg").close();
-render();
 
-/* التنقل */
-document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("on",x===b));
-["store","deals","play","chat"].forEach(v=>$("v-"+v).classList.toggle("hidden",v!==b.dataset.v));
-if(b.dataset.v!=="play")stopSnake();else showGame(curG);if(b.dataset.v==="chat")window.initChat&&window.initChat();if(b.dataset.v==="deals")loadDeals()});
+/* ===== البيانات ===== */
+const PL={pc:"بيسي",mobile:"هاتف",xbox:"Xbox",ps:"PlayStation"};
+const CATS={br:"باتل رويال",fps:"تصويب",moba:"مواجهات",rpg:"آر بي جي",mmo:"عالم أونلاين مفتوح",strat:"استراتيجية",fight:"قتال وأكشن",sport:"رياضة وسباقات",party:"خفيفة ومرحة",surv:"بقاء وبناء",card:"بطاقات وألغاز"};
+const SB="https://cdn.cloudflare.steamstatic.com/steam/apps/";
+const mk=(n,c,p,s,t,o)=>Object.assign({n:n,c:c,p:p.split(","),s:s,t:t},o||{});
+const games=[
+ mk("Fortnite","br","pc,xbox,ps",0,"مئة لاعب على جزيرة واحدة، وآخر من يبقى يفوز. تبني وتهدم وأنت تقاتل.",{e:1,u:"https://www.fortnite.com"}),
+ mk("Apex Legends","br","pc,xbox,ps",1172470,"أبطال بقدرات مختلفة، فرق من ثلاثة، وحلقة تضيق عليك كل دقيقة.",{u:"https://www.ea.com/games/apex-legends"}),
+ mk("Rocket League","sport","pc,xbox,ps",0,"كرة قدم بالسيارات. قاعدتها تُفهم في دقيقة، وإتقانها يأخذ شهورًا.",{i:252950,e:1,u:"https://www.rocketleague.com"}),
+ mk("Warframe","fight","pc,xbox,ps",230410,"تلعب بمحارب فضائي في درع حيّ، وتخرج مع أصحابك في مهمات تعاونية.",{e:1,u:"https://www.warframe.com"}),
+ mk("Counter-Strike 2","fps","pc",730,"جولات قصيرة، ورصاصة واحدة قد تكفي. تفكيرك فيها أهم من تصويبك.",{u:"https://www.counter-strike.net"}),
+ mk("PUBG: BATTLEGROUNDS","br","pc,xbox,ps,mobile",578080,"من بدأ موجة الباتل رويال: خريطة كبيرة وأسلحة أقرب للواقع.",{u:"https://pubg.com",qm:"PUBG MOBILE"}),
+ mk("Brawlhalla","fight","pc,xbox,ps,mobile",291550,"قتال منصات سريع، شخصيات مجانية تتبدل كل أسبوع، وتلعب مع أصحابك من أي جهاز.",{u:"https://www.brawlhalla.com"}),
+ mk("The Finals","fps","pc,xbox,ps",2073850,"برنامج مسابقات متلفز: فرق تسرق الأموال والمباني تنهار من حولك.",{u:"https://www.reachthefinals.com"}),
+ mk("Dota 2","moba","pc",570,"عشرات الأبطال وخريطة واحدة ومباراة تتجاوز نصف ساعة. صعبة وتستاهل.",{u:"https://www.dota2.com"}),
+ mk("Team Fortress 2","fps","pc",440,"تصويب فريقين بشخصيات كرتونية مضحكة. قديمة، وما زالت حيّة.",{u:"https://www.teamfortress.com"}),
+ mk("Destiny 2","fps","pc,xbox,ps",1085660,"تصويب بعالم مشترك وغارات تعاونية، وقصة عن حرّاس يدافعون عن آخر مدينة.",{u:"https://www.destinythegame.com"}),
+ mk("Path of Exile","rpg","pc,xbox,ps",238960,"آر بي جي أكشن عميق: شجرة مهارات ضخمة وأسلحة لا تنتهي.",{u:"https://www.pathofexile.com"}),
+ mk("Lost Ark","mmo","pc",1599340,"قتال سريع وغارات ضخمة وجزر كثيرة تستكشفها.",{u:"https://www.playlostark.com"}),
+ mk("Marvel Rivals","fps","pc,xbox,ps",2767030,"أبطال مارفل في فرق من ستة، ولكل بطل قدرات، والخريطة نفسها تتحطم.",{u:"https://www.marvelrivals.com"}),
+ mk("Overwatch 2","fps","pc,xbox,ps",2357570,"خمسة ضد خمسة، ولكل بطل دور واضح: دبابة أو ضرر أو دعم.",{u:"https://overwatch.blizzard.com"}),
+ mk("War Thunder","fight","pc,xbox,ps",236390,"طائرات ودبابات وسفن حربية حقيقية في معارك على الإنترنت.",{u:"https://warthunder.com"}),
+ mk("Paladins","fps","pc,xbox,ps",444090,"تصويب أبطال، وببطاقات تضبط بها أسلوب كل بطل.",{u:"https://www.paladins.com"}),
+ mk("Unturned","surv","pc",304930,"نجاة من الزومبي بمظهر مكعبات، وأحلى مع الأصدقاء.",{}),
+ mk("Fall Guys","party","pc,xbox,ps",1097150,"ستون لاعبًا يجرون ويقفزون في مراحل مضحكة، والفائز واحد.",{e:1,u:"https://fallguys.com"}),
+ mk("Halo Infinite","fps","pc,xbox",1240440,"مجانية في اللعب الجماعي: معارك فريق ضد فريق في عالم هالو.",{u:"https://www.halowaypoint.com"}),
+ mk("Naraka: Bladepoint","br","pc,xbox,ps",1203220,"باتل رويال بالسيوف والخطافات، تتسلق وتقاتل حتى في الهواء.",{}),
+ mk("Albion Online","mmo","pc,mobile",761890,"اقتصاده كله من صنع اللاعبين: تجمع وتصنع وتبيع وتقاتل.",{u:"https://albiononline.com"}),
+ mk("RuneScape","mmo","pc,mobile",1343400,"من أقدم الألعاب الأونلاين وما زال حيًّا، بمهارات كثيرة وتطور بطيء ممتع.",{u:"https://www.runescape.com"}),
+ mk("Delta Force","fps","pc,xbox,ps,mobile",2507950,"تصويب تكتيكي بين فريقين على خرائط كبيرة ومعها مركبات.",{}),
+ mk("Eternal Return","br","pc",1049590,"باتل رويال تأخذ من ألعاب المواجهات: تجمع الأدوات وتصنع وتقاتل.",{}),
+ mk("Neverwinter","rpg","pc,xbox,ps",109600,"آر بي جي بعالم دنجنز آند دراغونز، مجانية على الحاسوب.",{}),
+ mk("Crossout","fight","pc,xbox,ps",386180,"تبني سيارتك من القطع التي تجمعها، ثم تدخل بها المعارك.",{u:"https://crossout.net"}),
+ mk("Genshin Impact","rpg","pc,mobile,ps",0,"عالم مفتوح بقتال العناصر، وشخصيات تجمعها في فريقك، وتحديثات مستمرة.",{e:1,u:"https://genshin.hoyoverse.com"}),
+ mk("Honkai: Star Rail","rpg","pc,mobile,ps",0,"قتال بالدور في رحلة بين النجوم، بقصة تستحق المتابعة.",{e:1,u:"https://hsr.hoyoverse.com"}),
+ mk("Zenless Zone Zero","fight","pc,mobile,ps",0,"أكشن سريع في مدينة مستقبلية، وفرق من الشخصيات.",{e:1,u:"https://zenless.hoyoverse.com"}),
+ mk("Wuthering Waves","rpg","pc,mobile",0,"عالم مفتوح وقتال سريع، وتنقّل بالقفز والتسلق.",{e:1,u:"https://wutheringwaves.kurogames.com"}),
+ mk("Roblox","party","pc,mobile,xbox,ps",0,"ملايين الألعاب صنعها لاعبون مثلك، وتجد فيها كل شيء.",{u:"https://www.roblox.com"}),
+ mk("Valorant","fps","pc",0,"تصويب تكتيكي بأبطال وقدرات، وكل جولة قرار.",{u:"https://playvalorant.com"}),
+ mk("League of Legends","moba","pc",0,"خمسة ضد خمسة، والهدف تدمير قاعدة الخصم. الأشهر في فئتها.",{u:"https://www.leagueoflegends.com"}),
+ mk("Wild Rift","moba","mobile",0,"لعبة League of Legends على الهاتف، بمباراة أقصر.",{u:"https://wildrift.leagueoflegends.com"}),
+ mk("Call of Duty: Warzone","br","pc,xbox,ps",0,"باتل رويال ضخمة من عالم Call of Duty.",{u:"https://www.callofduty.com/warzone"}),
+ mk("Call of Duty: Mobile","fps","mobile",0,"Call of Duty في هاتفك، بأطوار كثيرة.",{u:"https://www.callofduty.com/mobile"}),
+ mk("Free Fire","br","mobile",0,"باتل رويال خفيفة بمباريات قصيرة، وتعمل على هواتف كثيرة.",{u:"https://ff.garena.com"}),
+ mk("Mobile Legends","moba","mobile",0,"مواجهات خمسة ضد خمسة على الهاتف، بمباراة قصيرة.",{u:"https://m.mobilelegends.com"}),
+ mk("Brawl Stars","fight","mobile",0,"معارك قصيرة بشخصيات كثيرة وأطوار متنوعة.",{u:"https://supercell.com/en/games/brawlstars/"}),
+ mk("Clash Royale","strat","mobile",0,"بطاقات ومواجهة مباشرة، والمباراة تنتهي في ثلاث دقائق.",{u:"https://supercell.com/en/games/clashroyale/"}),
+ mk("Clash of Clans","strat","mobile",0,"تبني قريتك، وتهاجم غيرك، وتنضم إلى عشيرة.",{u:"https://supercell.com/en/games/clashofclans/"}),
+ mk("Candy Crush Saga","card","mobile",0,"ألغاز حلوى، ومستوى واحد يكفي لجلسة.",{u:"https://king.com/game/candycrush"}),
+ mk("Subway Surfers","party","mobile",0,"تركض وتتفادى القطارات، بلا نهاية.",{u:"https://subwaysurfers.com"}),
+ mk("8 Ball Pool","sport","mobile",0,"بلياردو مباشر ضد لاعبين من العالم.",{}),
+ mk("Stumble Guys","party","pc,mobile",0,"مراحل مضحكة ولاعبون كثيرون، وفائز واحد.",{u:"https://www.stumbleguys.com"}),
+ mk("Hearthstone","card","pc,mobile",0,"لعبة بطاقات من بليزارد، سريعة وسهلة البداية.",{u:"https://hearthstone.blizzard.com"}),
+ mk("Diablo Immortal","rpg","pc,mobile",0,"ديابلو على الهاتف والحاسوب: أكشن ومعارك زعماء.",{u:"https://diabloimmortal.blizzard.com"}),
+ mk("World of Tanks","fight","pc,xbox,ps",0,"معارك دبابات بفرق من خمسة عشر لاعبًا.",{u:"https://worldoftanks.com"}),
+ mk("Pokemon UNITE","moba","mobile",0,"مواجهات خمسة ضد خمسة بشخصيات بوكيمون.",{u:"https://unite.pokemon.com"}),
+ mk("SuperTuxKart","sport","pc",0,"سباقات كارت مرحة، مفتوحة المصدر ولها مجتمع حي.",{o:1,u:"https://supertuxkart.net"}),
+ mk("0 A.D.","strat","pc",0,"استراتيجية تاريخية جميلة: تبني حضارة وتجهّز جيشًا.",{o:1,u:"https://play0ad.com"}),
+ mk("OpenRA","strat","pc",0,"إحياء مفتوح المصدر لألعاب الاستراتيجية الكلاسيكية مثل Red Alert.",{o:1,u:"https://www.openra.net"}),
+ mk("Luanti","surv","pc,mobile",0,"عالم مكعبات مفتوح المصدر قابل للتعديل، وكان اسمه Minetest.",{o:1,u:"https://www.luanti.org"}),
+ mk("Mindustry","strat","pc,mobile",0,"تبني مصانع وخطوط دفاع وتواجه موجات الأعداء.",{o:1,u:"https://mindustrygame.github.io"}),
+ mk("Xonotic","fps","pc",0,"تصويب سريع على الطراز القديم، مفتوح المصدر ومجاني.",{o:1,u:"https://xonotic.org"})
+];
+const bySlug={};games.forEach(g=>{bySlug[slug(g.n)]=g});
+const feat=["Marvel Rivals","Apex Legends","Warframe","Fortnite"].map(n=>games.find(g=>g.n===n));
 
-/* العروض */
-const okU=u=>/^https:\/\//.test(u||"");
-function dealCard(img,title,line,url,badge){const a=document.createElement("a");a.className="card";a.href=okU(url)?url:"#";a.target="_blank";a.rel="noopener noreferrer";
-if(okU(img)){const i=document.createElement("img");i.src=img;i.alt="";i.loading="lazy";i.className="di";a.append(i)}
-const c=document.createElement("div");c.className="ci";const b=document.createElement("b");b.textContent=title;const l=document.createElement("span");l.textContent=line;c.append(b,l);
-if(badge){const t=document.createElement("span");t.className="tag os";t.textContent=badge;c.append(document.createElement("br"),t)}
-a.append(c);return a}
-function fallback(el,txt,url){el.textContent="";const p=document.createElement("p");p.className="sub";p.textContent=txt;const a=document.createElement("a");a.className="btn";a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.textContent="افتح الصفحة الرسمية";el.append(p,a)}
-let dealsLoaded=false;
-async function loadDeals(){if(dealsLoaded)return;dealsLoaded=true;
-$("free").textContent="جارٍ التحميل...";$("steam").textContent="جارٍ التحميل...";
-try{const r=await fetch("https://www.gamerpower.com/api/giveaways?platform=epic-games-store&type=game");if(!r.ok)throw 0;const d=await r.json();if(!Array.isArray(d)||!d.length)throw 0;
-$("free").textContent="";d.slice(0,12).forEach(g=>$("free").append(dealCard(g.thumbnail,g.title,(g.worth&&g.worth!=="N/A"?"كانت "+g.worth+" — ":"")+"مجانية الآن",g.open_giveaway_url,g.end_date&&g.end_date!=="N/A"?"تنتهي "+String(g.end_date).slice(0,10):"Epic")))}
-catch(e){fallback($("free"),"تعذّر تحميل القائمة الآن. يمكنك رؤية ألعاب Epic المجانية مباشرة.","https://store.epicgames.com/free-games")}
-try{const r=await fetch("https://www.cheapshark.com/api/1.0/deals?storeID=1&onSale=1&sortBy=Deal%20Rating&pageSize=24");if(!r.ok)throw 0;const d=await r.json();if(!Array.isArray(d)||!d.length)throw 0;
-$("steam").textContent="";d.forEach(g=>$("steam").append(dealCard(g.thumb,g.title,"$"+g.salePrice+" بدل $"+g.normalPrice,g.steamAppID?"https://store.steampowered.com/app/"+encodeURIComponent(g.steamAppID):"https://store.steampowered.com/specials","-"+Math.round(+g.savings)+"%")))}
-catch(e){fallback($("steam"),"تعذّر تحميل العروض الآن. يمكنك رؤية عروض Steam مباشرة.","https://store.steampowered.com/specials")}}
+/* ===== صور ===== */
+function grad(n){let h=0;for(const ch of n)h=(h*31+ch.charCodeAt(0))>>>0;const a=h%360,b=(a+55)%360;
+ return "data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl('+a+',65%,38%)"/><stop offset="1" stop-color="hsl('+b+',70%,20%)"/></linearGradient></defs><rect width="900" height="500" fill="url(#g)"/></svg>')}
+function art(g,big){const id=g.i||g.s;
+ if(!id)return '<img src="'+grad(g.n)+'" alt="">';
+ return '<img loading="lazy" alt="" src="'+SB+id+(big?"/library_hero.jpg":"/header.jpg")+'"'+(big?' data-alt="'+SB+id+'/header.jpg"':'')+' data-fb="'+esc(g.n)+'">'}
+document.addEventListener("error",function(e){const t=e.target;if(t&&t.tagName==="IMG"&&t.dataset.fb){if(t.dataset.alt){t.src=t.dataset.alt;delete t.dataset.alt}else{t.src=grad(t.dataset.fb);delete t.dataset.fb}}},true);
 
-/* الألعاب */
-let curG="snake",snakeT=null;
-document.querySelectorAll(".tabs2 .chip").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs2 .chip").forEach(x=>x.classList.toggle("on",x===b));curG=b.dataset.g;showGame(curG)});
-function stopSnake(){clearInterval(snakeT);snakeT=null;document.onkeydown=null}
-function best(k,v){try{if(v!==undefined&&v>(+localStorage.getItem(k)||0))localStorage.setItem(k,v);return +localStorage.getItem(k)||0}catch(e){return 0}}
-function showGame(g){stopSnake();g==="snake"?snake():memory()}
-function snake(){const S=$("stage"),N=20,C=16;
-S.innerHTML=`<p>النقاط: <b id="sc">0</b> — الأفضل: <b id="bs">${best("ludino_snake")}</b></p><canvas id="cv" width="${N*C}" height="${N*C}" aria-label="لعبة الثعبان"></canvas><p class="note">الأسهم أو اسحب بإصبعك للتحكم</p><button class="btn" id="rs">ابدأ من جديد</button>`;
-const cx=$("cv").getContext("2d");let s,d,nd,f,sc;
-const food=()=>{do{f={x:Math.random()*N|0,y:Math.random()*N|0}}while(s.some(p=>p.x===f.x&&p.y===f.y))};
-const start=()=>{s=[{x:10,y:10},{x:9,y:10},{x:8,y:10}];d=nd={x:1,y:0};sc=0;$("sc").textContent=0;food();clearInterval(snakeT);snakeT=setInterval(tick,110)};
-const turn=v=>{if(v.x!==-d.x||v.y!==-d.y)nd=v};
-function tick(){d=nd;const h={x:s[0].x+d.x,y:s[0].y+d.y};
-if(h.x<0||h.y<0||h.x>=N||h.y>=N||s.some(p=>p.x===h.x&&p.y===h.y)){clearInterval(snakeT);$("bs").textContent=best("ludino_snake",sc);return}
-s.unshift(h);if(h.x===f.x&&h.y===f.y){sc++;$("sc").textContent=sc;food()}else s.pop();
-cx.fillStyle="#05070b";cx.fillRect(0,0,N*C,N*C);cx.fillStyle="#ef4444";cx.fillRect(f.x*C+2,f.y*C+2,C-4,C-4);
-s.forEach((p,i)=>{cx.fillStyle=i?"#ff9a3c":"#ff6a1a";cx.fillRect(p.x*C+1,p.y*C+1,C-2,C-2)})}
-document.onkeydown=e=>{const m={ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0}}[e.key];if(m){e.preventDefault();turn(m)}};
-let t0;const cv=$("cv");
-cv.addEventListener("touchstart",e=>{t0=e.touches[0]},{passive:true});
-cv.addEventListener("touchend",e=>{if(!t0)return;const t=e.changedTouches[0],dx=t.clientX-t0.clientX,dy=t.clientY-t0.clientY;
-if(Math.max(Math.abs(dx),Math.abs(dy))<20)return;Math.abs(dx)>Math.abs(dy)?turn({x:dx>0?1:-1,y:0}):turn({x:0,y:dy>0?1:-1})});
-$("rs").onclick=start;start()}
-function memory(){const E=["🎮","👾","🚀","🏆","🎯","⚔️"],S=$("stage");let deck=[...E,...E].sort(()=>Math.random()-.5),open=[],lock=false,moves=0,done=0;
-S.innerHTML=`<p>الحركات: <b id="mv">0</b> — الأفضل (الأقل): <b id="mb2">${best("ludino_mem")?1000-best("ludino_mem"):"-"}</b></p><div class="mem" id="mm">${deck.map((e,i)=>`<button class="mc" data-i="${i}" aria-label="بطاقة">?</button>`).join("")}</div><button class="btn" id="rm">ابدأ من جديد</button>`;
-$("rm").onclick=memory;
-$("mm").onclick=e=>{const b=e.target.closest(".mc");if(!b||lock||b.classList.contains("up"))return;
-b.textContent=deck[b.dataset.i];b.classList.add("up");open.push(b);
-if(open.length===2){moves++;$("mv").textContent=moves;const[a,c]=open;
-if(deck[a.dataset.i]===deck[c.dataset.i]){open=[];if(++done===E.length){best("ludino_mem",1000-moves);$("mb2").textContent=1000-best("ludino_mem")}}
-else{lock=true;setTimeout(()=>{a.textContent=c.textContent="?";a.classList.remove("up");c.classList.remove("up");open=[];lock=false},700)}}}}
+/* ===== حالة ===== */
+let wish=new Set();try{wish=new Set(JSON.parse(ls.get("ludino_wish","[]")))}catch(e){}
+const saveWish=()=>ls.set("ludino_wish",JSON.stringify(Array.from(wish)));
+document.documentElement.dataset.theme=ls.get("ludino_theme","dark");
+const st={q:"",plat:"all",cat:"all",sort:"def"};
+let heroT=0,hi=0,liveT=0,unsub=[];
+const ys={};let cur="";
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("show"),2600)}
+function stopTimers(){clearInterval(heroT);clearInterval(liveT);unsub.forEach(f=>{try{f()}catch(e){}});unsub=[]}
+const ar=(n,a)=>n===1?a[0]:n===2?a[1]:(n>=3&&n<=10)?n+" "+a[2]:n+" "+a[3];
+function left(ms){if(ms<=0)return"انتهى العرض";const m=Math.floor(ms/6e4),d=Math.floor(m/1440),h=Math.floor(m%1440/60),mi=m%60,p=[];
+ if(d)p.push(ar(d,["يوم","يومان","أيام","يومًا"]));if(h&&p.length<2)p.push(ar(h,["ساعة","ساعتان","ساعات","ساعة"]));if(!d&&mi&&p.length<2)p.push(ar(mi,["دقيقة","دقيقتان","دقائق","دقيقة"]));
+ if(!p.length)p.push("أقل من دقيقة");return"باقي "+p.join(" و")}
+
+/* ===== روابط اللعب ===== */
+function links(g){const q=encodeURIComponent(g.n),o=[];
+ if(g.p.includes("pc")&&!g.o){if(g.s)o.push({k:"steam",l:"Steam",h:"https://store.steampowered.com/app/"+g.s});if(g.e)o.push({k:"epic",l:"Epic Games",h:"https://store.epicgames.com/browse?q="+q})}
+ if(g.p.includes("mobile")){const m=encodeURIComponent(g.qm||g.n);o.push({k:"ios",l:"App Store",h:"https://apps.apple.com/search?term="+m},{k:"and",l:"Google Play",h:"https://play.google.com/store/search?c=apps&q="+m})}
+ if(g.p.includes("xbox"))o.push({k:"xbox",l:"متجر Xbox",h:"https://www.xbox.com/search?q="+q});
+ if(g.p.includes("ps"))o.push({k:"ps",l:"متجر PlayStation",h:"https://store.playstation.com/search/"+q});
+ if(g.u)o.push({k:"web",l:g.o?"الموقع الرسمي (تنزيل مجاني)":"الموقع الرسمي",h:g.u});
+ return o}
+function mainLink(L){const want=dev==="ios"?"ios":dev==="and"?"and":"pc";
+ if(want==="ios"||want==="and"){const f=L.find(x=>x.k===want);if(f)return f}
+ return L.find(x=>x.k==="steam")||L.find(x=>x.k==="epic")||L.find(x=>x.k==="web")||L[0]}
+
+/* ===== بطاقات ===== */
+const heart=(g)=>'<button class="wish'+(wish.has(slug(g.n))?" on":"")+'" data-a="wish" data-n="'+slug(g.n)+'" aria-label="قائمة الأمنيات">♥</button>';
+function card(g){return '<article class="card"><a href="#/game/'+slug(g.n)+'"><div class="cover">'+art(g)+'<span class="nm">'+esc(g.n)+'</span></div><div class="info">'+CATS[g.c]+'<div>'+g.p.map(p=>'<i class="tag">'+PL[p]+'</i>').join("")+(g.o?'<i class="tag os">مفتوحة المصدر</i>':'')+'</div></div></a>'+heart(g)+'</article>'}
+
+/* ===== المتجر ===== */
+function filtered(){const q=st.q.trim().toLowerCase();
+ let l=games.filter(g=>(st.plat==="all"||g.p.includes(st.plat))&&(st.cat==="all"||(st.cat==="os"?g.o:g.c===st.cat))&&(!q||g.n.toLowerCase().includes(q)||CATS[g.c].includes(q)));
+ if(st.sort==="az")l=l.slice().sort((a,b)=>a.n.localeCompare(b.n));
+ return l}
+function updateGrid(){const l=filtered();
+ $("#plats").innerHTML=[["all","كل الأجهزة"],["pc","بيسي"],["mobile","هاتف"],["xbox","Xbox"],["ps","PlayStation"]].map(x=>'<button class="chip'+(st.plat===x[0]?" on":"")+'" data-a="plat" data-v="'+x[0]+'">'+x[1]+'</button>').join("");
+ $("#cats").innerHTML=[["all","كل الأنواع"]].concat(Object.keys(CATS).map(k=>[k,CATS[k]])).concat([["os","مفتوحة المصدر"]]).map(x=>'<button class="chip'+(st.cat===x[0]?" on":"")+'" data-a="cat" data-v="'+x[0]+'">'+x[1]+'</button>').join("");
+ $("#count").textContent=l.length+" "+(l.length===1?"لعبة":"لعبة")+(st.q?" لـ «"+st.q+"»":"");
+ $("#grid").innerHTML=l.length?l.map(card).join(""):'<p class="muted" style="grid-column:1/-1;padding:30px 0">لا شيء بهذا الاسم. جرّب كلمة أقصر، أو اضغط «فاجئني».</p>'}
+function heroHTML(){const g=feat[hi];
+ return '<a href="#/game/'+slug(g.n)+'">'+art(g,1)+'<div class="hx"><span class="badge">ابدأ بها</span><h2>'+esc(g.n)+'</h2><p>'+esc(g.t)+'</p><span class="btn">التفاصيل ←</span></div></a><div class="dots">'+feat.map((_,i)=>'<button data-a="hero" data-v="'+i+'" class="'+(i===hi?"on":"")+'" aria-label="الشريحة '+(i+1)+'"></button>').join("")+'</div>'}
+function storePage(){
+ view.innerHTML='<h1>ألعاب تستحق وقتك</h1><p class="sub">'+games.length+' لعبة مجانية. اضغط على أي لعبة، ويصلك الرابط الرسمي لتنزيلها.</p>'+
+ '<section class="hero" id="hero"></section>'+
+ '<div class="bar"><input id="q" type="search" placeholder="ابحث باسم اللعبة أو نوعها" aria-label="بحث" value="'+esc(st.q)+'"><select id="sort" aria-label="الترتيب"><option value="def">ترتيبنا</option><option value="az"'+(st.sort==="az"?" selected":"")+'>أ - ي</option></select><button class="btn sec" data-a="rand">🎲 فاجئني</button></div>'+
+ '<div class="chips" id="plats"></div><div class="chips" id="cats"></div><p class="muted" id="count"></p><div class="grid" id="grid"></div>'+
+ '<aside class="promo"><div><b>اللعبة أحلى مع ناس.</b><p>ادخل الصالون، وقل أي لعبة تلعب، وابحث عن فريق.</p></div><a class="btn" href="#/chat">ادخل الصالون</a></aside>'+
+ '<footer class="legal">الألعاب وأسماؤها وصورها ملك أصحابها. لودينو لا يستضيف ملفات الألعاب، وإنما يوصلك إلى متاجرها ومواقعها الرسمية.</footer>';
+ $("#hero").innerHTML=heroHTML();
+ if(!reduce)heroT=setInterval(()=>{hi=(hi+1)%feat.length;const h=$("#hero");if(h)h.innerHTML=heroHTML()},7000);
+ updateGrid()}
+
+/* ===== صفحة اللعبة ===== */
+function gamePage(s){const g=bySlug[s];if(!g){location.hash="#/";return}
+ const L=links(g),main=mainLink(L),rest=L.filter(x=>x!==main);
+ const cloud=[];if(!g.o&&g.p.includes("pc"))cloud.push(["GeForce NOW","https://www.nvidia.com/en-us/geforce-now/games/"]);if(g.p.includes("xbox"))cloud.push(["Xbox Cloud Gaming","https://www.xbox.com/play"]);
+ const sim=games.filter(x=>x!==g&&x.c===g.c).slice(0,4);
+ view.innerHTML='<button class="back" data-a="back">→ رجوع</button>'+
+ '<section class="ghead">'+art(g,1)+'<div class="gt"><h1>'+esc(g.n)+'</h1><i class="tag free">'+(g.o?"مجانية ومفتوحة المصدر":"مجانية")+'</i><i class="tag">'+CATS[g.c]+'</i>'+g.p.map(p=>'<i class="tag">'+PL[p]+'</i>').join("")+'</div></section>'+
+ '<div class="gcols"><div>'+
+ '<p class="lead">'+esc(g.t)+'</p>'+
+ '<div class="cta">'+(main?'<a class="btn big" href="'+esc(main.h)+'" target="_blank" rel="noopener noreferrer">العب الآن · '+esc(main.l)+'</a>':'')+
+ '<button class="btn sec" data-a="wish" data-n="'+s+'">♥ أمنيتي</button><button class="btn sec" data-a="share">مشاركة</button></div>'+
+ '<p class="note">'+(g.o?'تُنزَّل مباشرة من موقع مطوّريها. وهذا مسموح لأنها مفتوحة المصدر.':'هذه هي اللعبة الأصلية، تُنزَّل من متجرها الرسمي. زر واحد ويوصلك.')+'</p>'+
+ (rest.length?'<p class="muted">أو من هنا:</p><div class="row">'+rest.map(x=>'<a class="btn sec" href="'+esc(x.h)+'" target="_blank" rel="noopener noreferrer">'+esc(x.l)+'</a>').join("")+'</div>':'')+
+ (cloud.length?'<p class="muted" style="margin-top:16px">ما عندك جهاز يشغّلها؟ جرّب اللعب السحابي، تلعب فيه من أي جهاز:</p><div class="row">'+cloud.map(x=>'<a class="btn sec" href="'+x[1]+'" target="_blank" rel="noopener noreferrer">'+x[0]+'</a>').join("")+'</div><p class="note">يتوقف توفرها على اللعبة، وقد يكون فيه انتظار أو اشتراك. تأكد من قائمة الخدمة.</p>':'')+
+ '<h2>رأي اللاعبين</h2><div id="revs"></div></div>'+
+ '<aside><div class="panel"><h3>بطاقة اللعبة</h3><dl><div><dt>النوع</dt><dd>'+CATS[g.c]+'</dd></div><div><dt>الأجهزة</dt><dd>'+g.p.map(p=>PL[p]).join("، ")+'</dd></div><div><dt>السعر</dt><dd>'+(g.o?"مجانية ومفتوحة المصدر":"مجانية")+'</dd></div></dl></div>'+
+ (sim.length?'<h3 style="margin:0 0 10px">قد تعجبك أيضًا</h3><div class="grid" style="grid-template-columns:1fr 1fr">'+sim.map(card).join("")+'</div>':'')+'</aside></div>';
+ drawReviews(s)}
+let vote=null;
+function drawReviews(s){const box=$("#revs");if(!box||!/^#\/game\//.test(location.hash))return;
+ const LU=window.LU;
+ if(LU===undefined){box.innerHTML='<p class="muted">جارٍ الاتصال...</p>';return}
+ if(LU===false){box.innerHTML='<p class="muted">الآراء تظهر على الموقع المنشور بعد ربطه بـ Firebase.</p>';return}
+ box.innerHTML='<div id="rsum" class="muted"></div><div id="rlist"></div><div class="panel" id="rform"></div>';
+ const form=$("#rform");
+ if(!LU.user){form.innerHTML='<p style="margin:0">سجّل دخولك لتكتب رأيك. <a href="#/chat" style="color:var(--orange)">الدخول من هنا</a></p>'}
+ else{form.innerHTML='<h3>ما رأيك فيها؟</h3><div class="vote"><button class="chip" data-a="vote" data-v="1">👍 أنصح بها</button><button class="chip" data-a="vote" data-v="0">👎 لا أنصح بها</button></div><textarea id="rtext" maxlength="400" placeholder="سطر أو سطران عن تجربتك"></textarea><div class="err" id="rerr"></div><button class="btn" data-a="postrev" data-n="'+s+'">انشر رأيي</button>'}
+ unsub.push(LU.reviews(s,function(list){
+  list.sort((a,b)=>((b.createdAt&&b.createdAt.seconds)||9e9)-((a.createdAt&&a.createdAt.seconds)||9e9));
+  const up=list.filter(r=>r.up).length;
+  $("#rsum").textContent=list.length?ar(list.length,["رأي واحد","رأيان","آراء","رأيًا"])+"، و"+Math.round(up*100/list.length)+"% ينصحون بها":"لا آراء بعد. كن أول من يكتب.";
+  const rl=$("#rlist");if(!rl)return;rl.innerHTML=list.map(r=>'<div class="rev"><b>'+esc(r.name||"—")+'</b><span class="'+(r.up?"up":"down")+'">'+(r.up?"👍 يوصي بها":"👎 لا يوصي بها")+'</span><p>'+esc(r.text||"")+'</p></div>').join("")
+ },function(){const rs=$("#rsum");if(rs)rs.textContent="الآراء غير متاحة الآن."}))}
+
+/* ===== بلاش هذا الأسبوع ===== */
+const cache={};
+async function getJSON(u){const r=await fetch(u);if(!r.ok)throw 0;return r.json()}
+function liveCard(img,title,line,url,badge,end){return '<a class="card live" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer"><div class="cover">'+(img?'<img loading="lazy" alt="" src="'+esc(img)+'" data-fb="'+esc(title)+'">':'<img alt="" src="'+grad(title)+'">')+'<span class="nm">'+esc(title)+'</span></div><div class="info"><span class="worth">'+esc(line)+'</span>'+(end?'<span class="left" data-end="'+end+'"></span>':'')+(badge?'<i class="tag free">'+esc(badge)+'</i>':'')+'</div></a>'}
+function fallback(el,txt,btn,url){el.innerHTML='<div style="grid-column:1/-1"><p class="muted">'+txt+'</p><a class="btn" href="'+url+'" target="_blank" rel="noopener noreferrer">'+btn+'</a></div>'}
+function tick(){$$("[data-end]").forEach(e=>{e.textContent=left(+e.dataset.end-Date.now())})}
+async function freePage(){
+ view.innerHTML='<h1>بلاش هذا الأسبوع</h1><p class="sub">ألعاب تُوزَّع مجانًا الآن على Epic وغيره. القائمة تتحدث وحدها.</p>'+
+ '<div class="row"><a class="btn sec" href="https://store.epicgames.com/free-games" target="_blank" rel="noopener noreferrer">Epic: مجانيات الأسبوع</a><a class="btn sec" href="https://store.steampowered.com/genre/Free%20to%20Play/" target="_blank" rel="noopener noreferrer">Steam: المجانية دائمًا</a></div>'+
+ '<h2>تُوزَّع مجانًا الآن</h2><div class="grid" id="epic"><p class="muted">جارٍ التحميل...</p></div><p class="muted">البيانات من <a style="color:var(--orange)" href="https://www.gamerpower.com" target="_blank" rel="noopener noreferrer">GamerPower</a>. تأكد من السعر في المتجر قبل أن تضغط «استلم».</p>'+
+ '<h2>تخفيضات Steam</h2><p class="sub">ألعاب مدفوعة نزل سعرها. لمن يريد أن يشتري بسعر أقل.</p><div class="grid" id="deals"><p class="muted">جارٍ التحميل...</p></div><p class="muted">البيانات من <a style="color:var(--orange)" href="https://www.cheapshark.com" target="_blank" rel="noopener noreferrer">CheapShark</a>.</p>';
+ try{if(!cache.epic)cache.epic=await getJSON("https://www.gamerpower.com/api/giveaways?platform=epic-games-store&type=game");
+  if(!Array.isArray(cache.epic)||!cache.epic.length)throw 0;
+  if(!$("#epic"))return;
+  $("#epic").innerHTML=cache.epic.slice(0,12).map(x=>{const end=x.end_date&&x.end_date!=="N/A"?Date.parse(String(x.end_date).replace(" ","T")+"Z"):0;return liveCard(x.thumbnail,x.title,(x.worth&&x.worth!=="N/A"?"كانت "+x.worth:"مجانية الآن"),x.open_giveaway_url,"مجانية",end||"")}).join("")}
+ catch(e){cache.epic=null;if($("#epic"))fallback($("#epic"),"تعذّر تحميل القائمة الآن.","افتح صفحة Epic","https://store.epicgames.com/free-games")}
+ try{if(!cache.deals)cache.deals=await getJSON("https://www.cheapshark.com/api/1.0/deals?storeID=1&onSale=1&sortBy=Deal%20Rating&pageSize=24");
+  if(!Array.isArray(cache.deals)||!cache.deals.length)throw 0;
+  if(!$("#deals"))return;
+  $("#deals").innerHTML=cache.deals.map(x=>liveCard(x.thumb,x.title,"$"+x.salePrice+" بدل $"+x.normalPrice,x.steamAppID?"https://store.steampowered.com/app/"+encodeURIComponent(x.steamAppID):"https://store.steampowered.com/specials","-"+Math.round(+x.savings)+"%","")).join("")}
+ catch(e){cache.deals=null;if($("#deals"))fallback($("#deals"),"تعذّر تحميل العروض الآن.","افتح عروض Steam","https://store.steampowered.com/specials")}
+ tick();liveT=setInterval(tick,30000)}
+
+/* ===== اقترح لي ===== */
+const MOODS={fight:{l:"أتنافس وأتعصّب",c:["br","fps","moba","fight"]},fun:{l:"أضحك مع أصحابي",c:["party","sport","surv"]},plan:{l:"أبني وأخطّط",c:["strat","surv","card"]},story:{l:"أستكشف عالمًا كبيرًا",c:["rpg","mmo"]}};
+const pk={dev:"pc",mood:"fight",seed:0};
+function pickPage(){
+ view.innerHTML='<h1>محتار ماذا تلعب؟</h1><p class="sub">اختر جهازك ومزاجك. نعطيك ثلاث ألعاب مناسبة، والاختيار لك.</p>'+
+ '<div class="panel"><div class="bar"><label>جهازي<br><select id="pdev">'+[["pc","حاسوب"],["mobile","هاتف"],["xbox","Xbox"],["ps","PlayStation"]].map(x=>'<option value="'+x[0]+'"'+(pk.dev===x[0]?" selected":"")+'>'+x[1]+'</option>').join("")+'</select></label>'+
+ '<label>مزاجي اليوم<br><select id="pmood">'+Object.keys(MOODS).map(k=>'<option value="'+k+'"'+(pk.mood===k?" selected":"")+'>'+MOODS[k].l+'</option>').join("")+'</select></label>'+
+ '<button class="btn sec" data-a="reshuffle" style="align-self:flex-end">غيّرها</button></div></div><div class="grid" id="pres"></div>';
+ pickDraw()}
+function pickDraw(){const pool=games.filter(g=>g.p.includes(pk.dev)&&MOODS[pk.mood].c.includes(g.c));
+ const out=pool.slice().sort((a,b)=>((slug(a.n)+pk.seed).length*7919+a.n.charCodeAt(0)*pk.seed)%97-((slug(b.n)+pk.seed).length*7919+b.n.charCodeAt(0)*pk.seed)%97).slice(0,3);
+ if(pk.seed>0){for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=out[i];out[i]=out[j];out[j]=t}}
+ $("#pres").innerHTML=out.length?out.map(card).join(""):'<p class="muted" style="grid-column:1/-1">لا أجد شيئًا يطابق هذا الجهاز مع هذا المزاج. جرّب مزاجًا آخر.</p>'}
+
+/* ===== الصالون ===== */
+const CH=[["general","# عام"],["lfg","# أبحث عن فريق"],["news","# أخبار الألعاب"],["media","# صور ومقاطع"]];
+let chan="general";const sentAt=[];
+function chatPage(){view.innerHTML='<h1>الصالون</h1><p class="sub">اللاعبون هنا يتكلمون. اكتب وسلّم.</p><div id="chatbox"></div>';drawChat()}
+const AERR={"auth/invalid-email":"البريد غير صحيح.","auth/invalid-credential":"البريد أو كلمة المرور خاطئة.","auth/email-already-in-use":"هذا البريد مسجّل من قبل.","auth/weak-password":"كلمة المرور ضعيفة (6 أحرف على الأقل).","auth/missing-password":"اكتب كلمة المرور."};
+function drawChat(){const box=$("#chatbox");if(!box||location.hash!=="#/chat")return;
+ const LU=window.LU;
+ if(LU===undefined){box.innerHTML='<div class="panel">جارٍ الاتصال بالصالون...</div>';return}
+ if(LU===false){box.innerHTML='<div class="panel">لا يتصل الصالون من هذه الصفحة. يعمل على الموقع المنشور بعد ربطه بـ Firebase.</div>';return}
+ unsub.forEach(f=>{try{f()}catch(e){}});unsub=[];
+ if(!LU.user){box.innerHTML='<div class="panel auth"><h3>ادخل لتتكلم</h3><p class="muted">التصفح بلا حساب. الحساب فقط للكتابة والتقييم.</p><input id="nm" maxlength="20" placeholder="اسمك بين اللاعبين (للتسجيل)"><input id="em" type="email" dir="ltr" placeholder="البريد"><input id="pw" type="password" dir="ltr" placeholder="كلمة المرور"><div class="err" id="aerr" role="alert"></div><button class="btn" data-a="signin">دخول</button> <button class="btn sec" data-a="signup">حساب جديد</button></div>';return}
+ box.innerHTML='<div class="chbar">'+CH.map(c=>'<button class="chip'+(c[0]===chan?" on":"")+'" data-a="chan" data-v="'+c[0]+'">'+c[1]+'</button>').join("")+'</div><div class="msgs" id="msgs" aria-live="polite"></div><div class="send"><input id="tx" maxlength="1000" placeholder="اكتب رسالة" aria-label="رسالة"><button class="btn" data-a="send">أرسل</button></div>';
+ unsub.push(LU.channel(chan,function(list){const m=$("#msgs");if(!m)return;m.textContent="";list.forEach(x=>{const r=document.createElement("div");r.className="m";const b=document.createElement("b");b.textContent=x.name||"—";if(LU.user&&x.uid===LU.user.uid)b.className="me";const t=document.createElement("small");t.textContent=x.createdAt&&x.createdAt.toDate?x.createdAt.toDate().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}):"";const p=document.createElement("p");p.textContent=x.text;r.append(b,t,p);m.append(r)});m.scrollTop=m.scrollHeight},function(){const m=$("#msgs");if(m)m.textContent="تعذّرت قراءة الرسائل."}))}
+async function authDo(kind){const LU=window.LU,e=$("#aerr");try{if(kind==="up"){const n=$("#nm").value.trim();if(!n){e.textContent="اكتب اسمك بين اللاعبين.";return}await LU.signUp(n,$("#em").value.trim(),$("#pw").value)}else await LU.signIn($("#em").value.trim(),$("#pw").value)}catch(x){e.textContent=AERR[x&&x.code]||"تعذّر التنفيذ. حاول مرة أخرى."}}
+
+/* ===== حسابي ===== */
+function mePage(){const LU=window.LU,u=LU&&LU.user;
+ const ws=Array.from(wish).map(s=>bySlug[s]).filter(Boolean);
+ view.innerHTML='<h1>حسابي</h1><p class="sub">قائمتك وإعداداتك.</p>'+
+ '<div class="panel"><h3>الحساب</h3><p class="muted" id="acct">'+(LU===undefined?"جارٍ الاتصال...":LU===false?"غير متصل هنا.":u?"مسجّل باسم: "+esc(u.displayName||u.email):"لم تسجّل الدخول.")+'</p>'+(u?'<button class="btn sec" data-a="signout">تسجيل الخروج</button>':'<a class="btn" href="#/chat">الدخول أو إنشاء حساب</a>')+'</div>'+
+ '<h2 style="margin-top:6px">قائمة أمنياتي ('+ws.length+')</h2>'+(ws.length?'<div class="grid">'+ws.map(card).join("")+'</div>':'<p class="muted">فارغة. اضغط ♥ على أي لعبة تعجبك.</p>')+
+ '<h2>الإعدادات</h2><div class="panel"><div class="bar"><label>المظهر<br><select id="theme"><option value="dark">داكن</option><option value="light"'+(document.documentElement.dataset.theme==="light"?" selected":"")+'>فاتح</option></select></label><button class="btn sec" data-a="clearwish" style="align-self:flex-end">امسح قائمة الأمنيات</button></div></div>'+
+ '<div class="panel"><h3>ناقصك لعبة؟</h3><p class="muted">اكتب اسمها ومنصتها ونراجعها.</p><textarea id="stext" maxlength="500" placeholder="اسم اللعبة، والجهاز، ورابطها إن وجد"></textarea><div class="err" id="serr"></div><button class="btn" data-a="suggest">أرسل الاقتراح</button></div>'+
+ '<footer class="legal">الألعاب وأسماؤها وصورها ملك أصحابها. لودينو لا يستضيف ملفات الألعاب، وإنما يوصلك إلى متاجرها ومواقعها الرسمية.</footer>'}
+
+/* ===== توجيه ===== */
+const pages={"":storePage,free:freePage,pick:pickPage,chat:chatPage,me:mePage};
+function route(){stopTimers();ys[cur]=window.scrollY;
+ const h=location.hash.replace(/^#\/?/,""),a=h.split("/"),r=a[0];
+ $$("[data-nav]").forEach(x=>x.classList.toggle("on",x.dataset.nav===(r==="game"?"":r)));
+ cur=r==="game"?"game/"+a[1]:r;
+ if(r==="game")gamePage(decodeURIComponent(a[1]||""));else(pages[r]||storePage)();
+ window.scrollTo(0,r===""&&ys[""]?ys[""]:0)}
+window.addEventListener("hashchange",route);
+
+/* ===== أحداث ===== */
+function setWish(s){if(wish.has(s)){wish.delete(s);toast("أُزيلت من أمنياتك")}else{wish.add(s);toast("أُضيفت إلى أمنياتك ♥")}saveWish();
+ $$('[data-a="wish"]').forEach(b=>{if(b.dataset.n===s)b.classList.toggle("on",wish.has(s))})}
+document.addEventListener("click",function(e){const b=e.target.closest("[data-a]");if(!b)return;const a=b.dataset.a,v=b.dataset.v;
+ if(a==="wish"){e.preventDefault();e.stopPropagation();setWish(b.dataset.n);if(location.hash==="#/me")mePage()}
+ else if(a==="back"){history.length>1?history.back():location.hash="#/"}
+ else if(a==="share"){const u=location.href,t=document.title;if(navigator.share){navigator.share({title:t,url:u}).catch(function(){})}else if(navigator.clipboard){navigator.clipboard.writeText(u).then(function(){toast("نُسخ الرابط")},function(){toast(u)})}else toast(u)}
+ else if(a==="plat"){st.plat=v;updateGrid()}
+ else if(a==="cat"){st.cat=v;updateGrid()}
+ else if(a==="rand"){const g=games[Math.floor(Math.random()*games.length)];location.hash="#/game/"+slug(g.n)}
+ else if(a==="hero"){hi=+v;$("#hero").innerHTML=heroHTML();clearInterval(heroT)}
+ else if(a==="reshuffle"){pk.seed++;pickDraw()}
+ else if(a==="chan"){chan=v;drawChat()}
+ else if(a==="signin")authDo("in");
+ else if(a==="signup")authDo("up");
+ else if(a==="signout"){window.LU&&window.LU.signOut()}
+ else if(a==="send"){const i=$("#tx"),t=i.value.trim();if(!t)return;const now=Date.now();while(sentAt.length&&now-sentAt[0]>10000)sentAt.shift();if(sentAt.length>=5){toast("أرسلت كثيرًا. انتظر ثواني.");return}sentAt.push(now);i.value="";window.LU.send(chan,t).catch(function(){i.value=t;toast("تعذّر الإرسال")})}
+ else if(a==="vote"){vote=v==="1";$$('[data-a="vote"]').forEach(x=>x.classList.toggle("on",x===b))}
+ else if(a==="postrev"){const e2=$("#rerr");if(vote===null){e2.textContent="اختر: أنصح بها أو لا أنصح.";return}e2.textContent="";window.LU.postReview(b.dataset.n,vote,$("#rtext").value.trim()).then(function(){toast("شكرًا، نُشر رأيك");$("#rtext").value=""}).catch(function(){e2.textContent="تعذّر النشر. تأكد من الاتصال."})}
+ else if(a==="clearwish"){wish.clear();saveWish();mePage();toast("مُسحت القائمة")}
+ else if(a==="suggest"){const t=$("#stext").value.trim(),er=$("#serr");if(!t){er.textContent="اكتب شيئًا أولًا.";return}if(!window.LU||!window.LU.user){er.textContent="سجّل دخولك أولًا.";return}er.textContent="";window.LU.suggest(t).then(function(){$("#stext").value="";toast("وصلنا اقتراحك، شكرًا")}).catch(function(){er.textContent="تعذّر الإرسال."})}
+});
+document.addEventListener("input",function(e){if(e.target.id==="q"){st.q=e.target.value;updateGrid()}});
+document.addEventListener("change",function(e){const id=e.target.id;
+ if(id==="sort"){st.sort=e.target.value;updateGrid()}
+ else if(id==="pdev"){pk.dev=e.target.value;pk.seed=0;pickDraw()}
+ else if(id==="pmood"){pk.mood=e.target.value;pk.seed=0;pickDraw()}
+ else if(id==="theme"){document.documentElement.dataset.theme=e.target.value;ls.set("ludino_theme",e.target.value);const m=$('meta[name="theme-color"]');if(m)m.content=e.target.value==="light"?"#eef1f5":"#ff6b20"}});
+document.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.id==="tx"){const b=$('[data-a="send"]');if(b)b.click()}});
+function live(){const h=location.hash;if(h==="#/chat")drawChat();else if(/^#\/game\//.test(h)){unsub.forEach(f=>{try{f()}catch(e){}});unsub=[];drawReviews(h.split("/")[2])}else if(h==="#/me")mePage()}
+window.addEventListener("lu-ready",live);window.addEventListener("lu-auth",live);
+route();
+})();
 </script>
 
 <script type="module">
-/* ضع إعدادات مشروعك هنا من Firebase Console */
+/* إعدادات مشروعك في Firebase */
 const cfg={apiKey:"AIzaSyC0rA0NufCRM2uMeP5z37dcjMbC4oCANOg",authDomain:"ludino-bca0a.firebaseapp.com",projectId:"ludino-bca0a",storageBucket:"ludino-bca0a.firebasestorage.app",messagingSenderId:"234584619277",appId:"1:234584619277:web:b0427fb8c356991b83d844"};
-
-const $=i=>document.getElementById(i);
-const CH=[["general","# عام"],["lfg","# البحث عن فريق"],["news","# أخبار الألعاب"],["media","# صور ومقاطع"]];
-let started=false;
-window.initChat=async()=>{
-if(started)return;
-if(cfg.apiKey.startsWith("YOUR")){$("setup").classList.remove("hidden");return}
-started=true;
 const V="https://www.gstatic.com/firebasejs/10.12.2/";
-const [{initializeApp},A,F]=await Promise.all([import(V+"firebase-app.js"),import(V+"firebase-auth.js"),import(V+"firebase-firestore.js")]);
-const app=initializeApp(cfg),auth=A.getAuth(app),db=F.getFirestore(app);
-let cur="general",unsub=null;
-const ERR={"auth/invalid-email":"البريد غير صحيح.","auth/weak-password":"كلمة المرور ضعيفة.","auth/email-already-in-use":"البريد مسجل مسبقًا.","auth/invalid-credential":"البريد أو كلمة المرور خاطئة.","auth/missing-password":"اكتب كلمة المرور."};
-const fail=e=>{$("er").textContent=ERR[e.code]||"تعذّر تنفيذ الطلب. حاول مرة أخرى."};
-$("si").onclick=()=>A.signInWithEmailAndPassword(auth,$("em").value.trim(),$("pw").value).catch(fail);
-$("su").onclick=async()=>{const n=$("nm").value.trim();if(!n){$("er").textContent="اكتب اسم اللاعب.";return}
-try{const c=await A.createUserWithEmailAndPassword(auth,$("em").value.trim(),$("pw").value);await A.updateProfile(c.user,{displayName:n})}catch(e){fail(e)}};
-$("so").onclick=()=>A.signOut(auth);
-$("chs").innerHTML=CH.map(c=>`<button class="chip" data-c="${c[0]}">${c[1]}</button>`).join("");
-function open(c){cur=c;document.querySelectorAll("#chs .chip").forEach(b=>b.classList.toggle("on",b.dataset.c===c));
-if(unsub)unsub();$("msgs").textContent="";
-const q=F.query(F.collection(db,"channels",c,"messages"),F.orderBy("createdAt","asc"),F.limit(100));
-unsub=F.onSnapshot(q,s=>{const box=$("msgs");box.textContent="";s.forEach(d=>{const m=d.data(),r=document.createElement("div");r.className="m";
-const b=document.createElement("b");b.textContent=m.name||"لاعب";if(m.uid===auth.currentUser.uid)b.className="me2";
-const t=document.createElement("small");t.textContent=m.createdAt?m.createdAt.toDate().toLocaleTimeString("ar",{hour:"2-digit",minute:"2-digit"}):"";
-const p=document.createElement("p");p.textContent=m.text;r.append(b,t,p);box.append(r)});box.scrollTop=box.scrollHeight},()=>{$("msgs").textContent="تعذّرت قراءة الرسائل. تحقق من قواعد الأمان."})}
-$("chs").onclick=e=>{const b=e.target.closest("[data-c]");if(b)open(b.dataset.c)};
-async function send(){const v=$("tx").value.trim();if(!v)return;$("tx").value="";
-try{await F.addDoc(F.collection(db,"channels",cur,"messages"),{text:v,uid:auth.currentUser.uid,name:auth.currentUser.displayName||"لاعب",createdAt:F.serverTimestamp()})}catch(e){$("tx").value=v}}
-$("sd").onclick=send;$("tx").addEventListener("keydown",e=>{if(e.key==="Enter")send()});
-A.onAuthStateChanged(auth,u=>{$("auth").classList.toggle("hidden",!!u);$("chat").classList.toggle("hidden",!u);
-if(u)open(cur);else if(unsub){unsub();unsub=null}});
-};
-if(!document.getElementById("v-chat").classList.contains("hidden"))window.initChat();
+(async function(){
+ try{
+  const [{initializeApp},A,F]=await Promise.all([import(V+"firebase-app.js"),import(V+"firebase-auth.js"),import(V+"firebase-firestore.js")]);
+  const app=initializeApp(cfg),auth=A.getAuth(app),db=F.getFirestore(app);
+  const nm=()=>auth.currentUser.displayName||"—";
+  window.LU={
+   get user(){return auth.currentUser},
+   signIn:(e,p)=>A.signInWithEmailAndPassword(auth,e,p),
+   async signUp(n,e,p){const c=await A.createUserWithEmailAndPassword(auth,e,p);await A.updateProfile(c.user,{displayName:n});return c.user},
+   signOut:()=>A.signOut(auth),
+   channel(ch,cb,err){const q=F.query(F.collection(db,"channels",ch,"messages"),F.orderBy("createdAt","asc"),F.limit(100));return F.onSnapshot(q,s=>cb(s.docs.map(d=>d.data())),err)},
+   send:(ch,text)=>F.addDoc(F.collection(db,"channels",ch,"messages"),{text:text,uid:auth.currentUser.uid,name:nm(),createdAt:F.serverTimestamp()}),
+   reviews(slug,cb,err){const q=F.query(F.collection(db,"reviews"),F.where("slug","==",slug),F.limit(50));return F.onSnapshot(q,s=>cb(s.docs.map(d=>d.data())),err)},
+   postReview:(slug,up,text)=>F.setDoc(F.doc(db,"reviews",slug+"__"+auth.currentUser.uid),{slug:slug,uid:auth.currentUser.uid,name:nm(),up:up,text:text,createdAt:F.serverTimestamp()}),
+   suggest:(text)=>F.addDoc(F.collection(db,"suggestions"),{text:text,uid:auth.currentUser.uid,name:nm(),createdAt:F.serverTimestamp()})
+  };
+  A.onAuthStateChanged(auth,()=>window.dispatchEvent(new Event("lu-auth")));
+ }catch(e){window.LU=false}
+ window.dispatchEvent(new Event("lu-ready"));
+})();
 </script>
 </body>
 </html>
